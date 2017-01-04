@@ -1,0 +1,168 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100vh;
+}
+
+canvas {
+  margin: 0 auto;
+}
+
+header {
+  padding: 10px;
+  background: black;
+}
+
+input {
+  display: block;
+  margin: 7px auto;
+  padding: 5px;
+  text-align: left;
+}
+
+form {
+  margin: 20px auto;
+}
+
+button {
+  padding: 10px;
+  background: white;
+  color: black;
+  cursor: pointer;
+  border: 2px solid black;
+}
+
+button:hover {
+  background: black;
+  color: white;
+}
+
+#w {
+  display: block;
+  width: 750px;
+  margin: 0 auto;
+  padding-top: 30px;
+  padding-bottom: 45px;
+}
+
+/** profile nav links **/
+#profiletabs {
+  display: block;
+  margin-bottom: 4px;
+  height: 50px;
+}
+
+#profiletabs ul {
+  list-style: none;
+  display: block;
+  width: 40%;
+  height: 50px;
+  margin: 0 auto;
+}
+
+#profiletabs ul li a {
+  display: block;
+  float: left;
+  padding: 8px 11px;
+  font-size: 1.2em;
+  font-weight: bold;
+  background: #000;
+}
+
+#profiletabs ul li a:hover {
+  background: navy;
+  color: #fff;
+}
+
+#profiletabs ul li a.sel {
+  background: #fff;
+  border-color: #d1cdb5;
+}
+
+#user-content {
+  display: block;
+  width: 100%;
+  background: #fff;
+  padding: 25px 20px;
+  padding-bottom: 35px;
+  overflow-y: scroll;
+}
+
+/* aaaddfidosjafiowjefoawjefioawjefoiawjefiojawoiefjoiawjefoiwajefoija */
+
+body {
+  background-color: white;
+  color: blue;
+  height: 100vh;
+  /*opacity: 50%;*/
+background-image: url("https://lh3.googleusercontent.com/-cvPfLNJ4JU8/Va561MYkJsI/AAAAAAAC3zc/P0wbdKxr7gg/w781-h1170/Light%2BFeast%2B-%2BTyristrand%252C%2BNorway%2Bby%2BOle%2BHenrik%2BSkjelstad.jpg");
+overflow: hidden;
+/*background-repeat: no-repeat;*/
+background-repeat: repeat-x;
+}
+img {
+    height: 100vh;
+  opacity: 50%;
+
+  overflow: hidden;
+}
+a:link, a:visited, a:hover, a:active {
+  text-decoration: none;
+  color: white;
+}
+
+#link-options, #signin-signup {
+  margin: 20vh auto;
+  width: 50%;
+}
+
+#link-options li {
+  margin: 30px 0;
+  padding: 3vh 3vw;
+  border: 4px solid white;
+  cursor: pointer;
+}
+
+#link-options li:hover {
+  background: #000;
+}
+
+ul {
+  list-style: none;
+}
+
+#user-content {
+  color: black;
+}
+body { font: 16px times;}
+
+path {
+stroke: steelblue;
+stroke-width: 2;
+fill: none;
+}
+
+.axis path,
+.axis line {
+fill: none;
+stroke: grey;
+stroke-width: 1;
+shape-rendering: crispEdges;
+}
+
+#leaderboard-table {
+  margin: 0 auto;
+  border: 3px solid black;
+}
+
+#leaderboard-table th {
+  padding: 0 30px;
+}
+
+/*# sourceMappingURL=app.css.map*/
