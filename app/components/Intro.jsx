@@ -15,9 +15,9 @@ const Intro = React.createClass({
     }
   },
   handleSignUpSubmit() {
-    this.props.stateMutator();
+    // this.props.stateMutator();
     this.props.signIn();
-    this.setState({loggedIn: true});
+    // this.setState({loggedIn: true});
   },
 componentDidMount(){
   // document.body.style.backgroundColor = "red";

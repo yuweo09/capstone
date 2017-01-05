@@ -22,10 +22,10 @@ const SignIn = React.createClass({
     };
     axios.post('/token', data)
       .then(res => {
-        this.props.stateMutator();
+        // this.props.stateMutator();
         this.props.signIn();
-        this.setState({loggedIn: true});
-        this.props.signIn;
+        // this.setState({loggedIn: true});
+        // this.props.signIn;
       })
       .catch(err => {
         console.error(err);
@@ -39,17 +39,34 @@ const SignIn = React.createClass({
     this.setState({loggedIn: true});
   },
 
+blah() {
+  if (this.props.isLoggedIn) {
+  return <Redirect to="/user" />
+} else {
+  return <div id="signin-signup">
+
+    <p>Sign in if you already have an account</p>
+    <form onSubmit={this.handleSubmit}>
+      <input placeholder="Email" name="email" type="email" onChange={this.handleChange} />
+      <input placeholder="Password" name="password" type="password" onChange={this.handleChange} />
+      <button type="submit">Login</button>
+    </form>
+  </div>
+}
+},
+
   render() {
     return (
-      <section>
-        <br />
-        <h3>Sign In</h3>
-        <form onSubmit={this.handleSubmit}>
-          <input placeholder="Email" name="email" type="email" onChange={this.handleChange} />
-          <input placeholder="Password" name="password" type="password" onChange={this.handleChange} />
-          <input type="submit" value="Sign In"/>
-        </form>
-      </section>
+    <this.blah/>
+      // <section>
+      //   <br />
+      //   <h3>Sign In</h3>
+      //   <form onSubmit={this.handleSubmit}>
+      //     <input placeholder="Email" name="email" type="email" onChange={this.handleChange} />
+      //     <input placeholder="Password" name="password" type="password" onChange={this.handleChange} />
+      //     <input type="submit" value="Sign In"/>
+      //   </form>
+      // </section>
     )
   }
 });

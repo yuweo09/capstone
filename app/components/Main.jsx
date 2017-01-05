@@ -104,6 +104,9 @@ const Main = React.createClass({
         <Match pattern="/projectboard" exactly render={
           () => <ProjectBoard
                 /> } />
+      <Match pattern="/projectpost" exactly render={
+                  () => <ProjectPost
+                        /> } />
       </main>
       )
 

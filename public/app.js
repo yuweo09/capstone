@@ -236,45 +236,34 @@ var App = _react2.default.createClass({
       _this2.setState({ loadErr: err });
     });
   },
-
-
-  // componentDidMount() {
-  //   axios.get('/token')
-  //     .then(res => {
-  //       let isLoggedIn = res.data;
-  //       if (isLoggedIn) {
-  //         this.setState({ isLoggedIn: true });
-  //         this.getCurrentUser();
-  //         this.getAllForum();
-  //         // this.getUserScores();
-  //         // this.getUserFriends();
-  //       } else {
-  //         this.setState({ isLoggedIn: false });
-  //       }
-  //     })
-  //     .catch(err => {
-  //       this.setState({ loadErr: err });
-  //     });
-  // },
-
-
-  signIn: function signIn() {
-    this.setState({ isLoggedIn: true });
-    if (this.state.isLoggedIn) {
-      this.getCurrentUser();
-      // this.getAllForum();
-      return _react2.default.createElement(_reactRouter.Redirect, { to: '/user' });
-    } else {
-      return _react2.default.createElement(_reactRouter.Redirect, { to: '/intro' });
-    }
-    // this.getAllUsers();
-    // this.getUserScores();
-  },
-  signOut: function signOut() {
+  componentDidMount: function componentDidMount() {
     var _this3 = this;
 
+    _axios2.default.get('/token').then(function (res) {
+      var isLoggedIn = res.data;
+      if (isLoggedIn) {
+        _this3.setState({ isLoggedIn: true });
+        _this3.getCurrentUser();
+        // this.getAllForum();
+        // this.getUserScores();
+        // this.getUserFriends();
+      } else {
+        _this3.setState({ isLoggedIn: false });
+      }
+    }).catch(function (err) {
+      _this3.setState({ loadErr: err });
+    });
+  },
+  signIn: function signIn() {
+    this.setState({ isLoggedIn: true });
+
+    this.getCurrentUser();
+  },
+  signOut: function signOut() {
+    var _this4 = this;
+
     _axios2.default.delete('/token').then(function (res) {
-      _this3.setState({
+      _this4.setState({
         currentUser: {},
         isLoggedIn: false
       });
@@ -459,9 +448,9 @@ var Intro = _react2.default.createClass({
     }
   },
   handleSignUpSubmit: function handleSignUpSubmit() {
-    this.props.stateMutator();
+    // this.props.stateMutator();
     this.props.signIn();
-    this.setState({ loggedIn: true });
+    // this.setState({loggedIn: true});
   },
   componentDidMount: function componentDidMount() {
     // document.body.style.backgroundColor = "red";
@@ -641,6 +630,9 @@ var Main = _react2.default.createClass({
         } }),
       _react2.default.createElement(_reactRouter.Match, { pattern: '/projectboard', exactly: true, render: function render() {
           return _react2.default.createElement(_ProjectBoard2.default, null);
+        } }),
+      _react2.default.createElement(_reactRouter.Match, { pattern: '/projectpost', exactly: true, render: function render() {
+          return _react2.default.createElement(ProjectPost, null);
         } })
     );
   }
@@ -756,6 +748,73 @@ var ProjectBoard = _react2.default.createClass({
 exports.default = ProjectBoard;
 });
 
+require.register("components/ProjectPost.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+// import { Button, Header, Image, Modal, Form,Select,Input, Card, Icon} from 'semantic-ui-react'
+
+var ProjectPost = _react2.default.createClass({
+  displayName: 'ProjectPost',
+  getInitialState: function getInitialState() {
+    return {
+      projectPost: {
+        title: '',
+        description: ''
+
+      }
+    };
+  },
+  handleChange: function handleChange() {
+    this.setState(_defineProperty({}, event.target.name, event.target.value));
+  },
+  componentDidMount: function componentDidMount() {},
+  post: function post() {
+    event.preventDefault();
+
+    var data = { title: this.state.title,
+      description: this.state.description
+    };
+    _axios2.default.post('/users/board', data).then(function (res) {
+      // this.props.stateMutator();
+      // this.setState({loggedIn: true});
+      // this.props.signIn;
+    }).catch(function (err) {
+      console.error(err);
+    });
+  },
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        'form',
+        { onSubmit: this.post },
+        _react2.default.createElement('input', { placeholder: 'Project Title', name: 'title', type: 'text', onChange: this.handleChange }),
+        _react2.default.createElement('input', { placeholder: 'Project Description', name: 'description', type: 'text', onChange: this.handleChange })
+      )
+    );
+  }
+});
+
+exports.default = ProjectBoard;
+});
+
 require.register("components/SignIn.jsx", function(exports, require, module) {
 'use strict';
 
@@ -800,10 +859,10 @@ var SignIn = _react2.default.createClass({
       password: this.state.password
     };
     _axios2.default.post('/token', data).then(function (res) {
-      _this.props.stateMutator();
+      // this.props.stateMutator();
       _this.props.signIn();
-      _this.setState({ loggedIn: true });
-      _this.props.signIn;
+      // this.setState({loggedIn: true});
+      // this.props.signIn;
     }).catch(function (err) {
       console.error(err);
     });
@@ -814,24 +873,44 @@ var SignIn = _react2.default.createClass({
 
     this.setState({ loggedIn: true });
   },
+  blah: function blah() {
+    if (this.props.isLoggedIn) {
+      return _react2.default.createElement(_reactRouter.Redirect, { to: '/user' });
+    } else {
+      return _react2.default.createElement(
+        'div',
+        { id: 'signin-signup' },
+        _react2.default.createElement(
+          'p',
+          null,
+          'Sign in if you already have an account'
+        ),
+        _react2.default.createElement(
+          'form',
+          { onSubmit: this.handleSubmit },
+          _react2.default.createElement('input', { placeholder: 'Email', name: 'email', type: 'email', onChange: this.handleChange }),
+          _react2.default.createElement('input', { placeholder: 'Password', name: 'password', type: 'password', onChange: this.handleChange }),
+          _react2.default.createElement(
+            'button',
+            { type: 'submit' },
+            'Login'
+          )
+        )
+      );
+    }
+  },
   render: function render() {
-    return _react2.default.createElement(
-      'section',
-      null,
-      _react2.default.createElement('br', null),
-      _react2.default.createElement(
-        'h3',
-        null,
-        'Sign In'
-      ),
-      _react2.default.createElement(
-        'form',
-        { onSubmit: this.handleSubmit },
-        _react2.default.createElement('input', { placeholder: 'Email', name: 'email', type: 'email', onChange: this.handleChange }),
-        _react2.default.createElement('input', { placeholder: 'Password', name: 'password', type: 'password', onChange: this.handleChange }),
-        _react2.default.createElement('input', { type: 'submit', value: 'Sign In' })
-      )
-    );
+    return _react2.default.createElement(this.blah, null)
+    // <section>
+    //   <br />
+    //   <h3>Sign In</h3>
+    //   <form onSubmit={this.handleSubmit}>
+    //     <input placeholder="Email" name="email" type="email" onChange={this.handleChange} />
+    //     <input placeholder="Password" name="password" type="password" onChange={this.handleChange} />
+    //     <input type="submit" value="Sign In"/>
+    //   </form>
+    // </section>
+    ;
   }
 });
 
@@ -871,9 +950,6 @@ var SignUp = _react2.default.createClass({
       password: ''
     };
   },
-  componentDidMount: function componentDidMount() {
-    $('#modal1').modal('open');
-  },
   handleChange: function handleChange(event) {
     this.setState(_defineProperty({}, event.target.name, event.target.value));
   },
@@ -892,7 +968,7 @@ var SignUp = _react2.default.createClass({
       _axios2.default.post('/token', data).then(function (res) {
         console.log('successfully posted token');
         // this.props.handleSignUpSubmit();
-        _this.props.stateMutator();
+        // this.props.stateMutator();
 
         _this.props.signIn();
       }).catch(function (err) {
@@ -902,25 +978,36 @@ var SignUp = _react2.default.createClass({
       console.log(err);
     });
   },
+  blah2: function blah2() {
+    if (this.props.isLoggedIn) {
+      return _react2.default.createElement(_reactRouter.Redirect, { to: '/user' });
+    } else {
+      return _react2.default.createElement(
+        'div',
+        { id: 'signin-signup' },
+        _react2.default.createElement(
+          'h3',
+          null,
+          'Sign Up'
+        ),
+        _react2.default.createElement(
+          'form',
+          { onSubmit: this.handleSubmit },
+          _react2.default.createElement('input', { placeholder: 'Email', name: 'email', type: 'email', onChange: this.handleChange }),
+          _react2.default.createElement('input', { placeholder: 'First name', name: 'first_name', type: 'text', onChange: this.handleChange }),
+          _react2.default.createElement('input', { placeholder: 'Last name', name: 'last_name', type: 'text', onChange: this.handleChange }),
+          _react2.default.createElement('input', { placeholder: 'Password', name: 'password', type: 'password', onChange: this.handleChange }),
+          _react2.default.createElement(
+            'button',
+            { type: 'submit' },
+            'Sign up'
+          )
+        )
+      );
+    }
+  },
   render: function render() {
-    return _react2.default.createElement(
-      'section',
-      null,
-      _react2.default.createElement(
-        'h3',
-        null,
-        'Sign Up'
-      ),
-      _react2.default.createElement(
-        'form',
-        null,
-        _react2.default.createElement('input', { placeholder: 'Email', name: 'email', type: 'email', onChange: this.handleChange }),
-        _react2.default.createElement('input', { placeholder: 'First name', name: 'first_name', type: 'text', onChange: this.handleChange }),
-        _react2.default.createElement('input', { placeholder: 'Last name', name: 'last_name', type: 'text', onChange: this.handleChange }),
-        _react2.default.createElement('input', { placeholder: 'Password', name: 'password', type: 'password', onChange: this.handleChange }),
-        _react2.default.createElement('input', { type: 'submit', value: 'Sign Up' })
-      )
-    );
+    return _react2.default.createElement(this.blah2, null);
   }
 });
 
@@ -1020,62 +1107,9 @@ var User = _react2.default.createClass({
   },
   render: function render() {
     return _react2.default.createElement(
-      'div',
+      'p',
       null,
-      _react2.default.createElement(
-        'div',
-        { id: 'w' },
-        _react2.default.createElement(
-          'div',
-          { id: 'user-content', className: 'clearfix' },
-          _react2.default.createElement(
-            'h1',
-            null,
-            this.props.currentUser.name
-          ),
-          _react2.default.createElement(
-            'nav',
-            { id: 'profiletabs' },
-            _react2.default.createElement(
-              'ul',
-              { id: 'tabs' },
-              _react2.default.createElement(
-                'li',
-                null,
-                _react2.default.createElement(
-                  _reactRouter.Link,
-                  { to: '/user/score' },
-                  'bthe'
-                )
-              )
-            )
-          ),
-          _react2.default.createElement(
-            'form',
-            { onSubmit: this.handleSubmit },
-            _react2.default.createElement('input', { placeholder: 'text', name: 'text', type: 'text' }),
-            _react2.default.createElement(
-              'button',
-              { type: 'submit' },
-              'SUBMIT'
-            )
-          ),
-          _react2.default.createElement(
-            'form',
-            { onSubmit: this.handleSubmit2 },
-            _react2.default.createElement(
-              'h1',
-              null,
-              this.props.forumPost.text
-            ),
-            _react2.default.createElement(
-              'button',
-              { type: 'submit' },
-              'Add to db'
-            )
-          )
-        )
-      )
+      'hi'
     );
   }
 });
@@ -1151,7 +1185,7 @@ var Header = _react2.default.createClass({
         _react2.default.createElement(
           'a',
           { href: '#', className: 'brand-logo' },
-          'Logo'
+          'Brand'
         ),
         _react2.default.createElement(
           'ul',
@@ -1162,17 +1196,13 @@ var Header = _react2.default.createClass({
             _react2.default.createElement(
               'a',
               { href: 'sass.html' },
-              'Sass'
+              'Profile'
             )
           ),
           _react2.default.createElement(
             'li',
             null,
-            _react2.default.createElement(
-              'a',
-              { href: 'badges.html' },
-              'Components'
-            )
+            _react2.default.createElement('a', { href: 'badges.html' })
           ),
           _react2.default.createElement(
             'li',
@@ -1180,7 +1210,7 @@ var Header = _react2.default.createClass({
             _react2.default.createElement(
               'a',
               { href: 'collapsible.html' },
-              'JavaScript'
+              'Signout'
             )
           )
         )

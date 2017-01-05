@@ -44,8 +44,7 @@ router.get('/users', authorize, (req, res, next) => {
 router.post('/users/board', authorize, (req, res, next) => {
 
   const { userId } = req.token;
-  const title =  'dev';
-  const description = 'blah'
+  const { title, description}=  req.body;
   const insertBoard = { userId, title, description};
 
   knex('project_board').insert(decamelizeKeys(insertBoard), '*')

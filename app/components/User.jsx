@@ -77,39 +77,7 @@ const User = React.createClass({
   },
   render() {
     return (
-
-      <div>
-        {/* <Header /> */}
-        <div id='w'>
-
-          <div id="user-content" className="clearfix">
-            <h1>{this.props.currentUser.name}</h1>
-            <nav id="profiletabs">
-              <ul id='tabs'>
-                <li><Link to='/user/score'>bthe</Link></li>
-                {/* <li><Link to='/user/friends'>Friends</Link></li>
-                <li><Link to='/user/leaderboard'>Leaderboard</Link></li> */}
-              </ul>
-            </nav>
-            <form onSubmit={this.handleSubmit}>
-              <input placeholder="text" name="text" type="text" />
-              <button type="submit">SUBMIT</button>
-            </form>
-
-            <form onSubmit={this.handleSubmit2}>
-              <h1>{this.props.forumPost.text}</h1>
-              <button type="submit">Add to db</button>
-            </form>
-
-
-            {/* <Match pattern="/user/score"  render={ () => <Forum handleSubmit3={this.handleSubmit3} /> } /> */}
-            {/* <Match pattern="/user/friends"  render={ () => <Friends { ...this.props } /> } />
-            <Match pattern="/user/leaderboard"  render={ () => <Forum { ...this.props } /> } /> */}
-          </div>
-
-        </div>
-      </div>
-
+      <p>hi</p>
     )
   }
 });

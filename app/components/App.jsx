@@ -42,39 +42,31 @@ const App = React.createClass({
         this.setState({ loadErr: err });
       });
   },
-
-  // componentDidMount() {
-  //   axios.get('/token')
-  //     .then(res => {
-  //       let isLoggedIn = res.data;
-  //       if (isLoggedIn) {
-  //         this.setState({ isLoggedIn: true });
-  //         this.getCurrentUser();
-  //         this.getAllForum();
-  //         // this.getUserScores();
-  //         // this.getUserFriends();
-  //       } else {
-  //         this.setState({ isLoggedIn: false });
-  //       }
-  //     })
-  //     .catch(err => {
-  //       this.setState({ loadErr: err });
-  //     });
-  // },
-
+  componentDidMount() {
+    axios.get('/token')
+      .then(res => {
+        let isLoggedIn = res.data;
+        if (isLoggedIn) {
+          this.setState({ isLoggedIn: true });
+          this.getCurrentUser();
+          // this.getAllForum();
+          // this.getUserScores();
+          // this.getUserFriends();
+        } else {
+          this.setState({ isLoggedIn: false });
+        }
+      })
+      .catch(err => {
+        this.setState({ loadErr: err });
+      });
+  },
 
 
   signIn() {
     this.setState({ isLoggedIn: true });
-    if(this.state.isLoggedIn) {
+
       this.getCurrentUser();
-      // this.getAllForum();
-      return <Redirect to="/user" />
-    }else{
-      return <Redirect to="/intro" />
-    }
-    // this.getAllUsers();
-    // this.getUserScores();
+
   },
 
   signOut() {

@@ -13,10 +13,6 @@ const SignUp = React.createClass({
       password: ''
     };
   },
-  componentDidMount() {
-    $('#modal1').modal('open');
-
-  },
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value});
   },
@@ -36,7 +32,7 @@ const SignUp = React.createClass({
           .then(res => {
             console.log('successfully posted token');
             // this.props.handleSignUpSubmit();
-            this.props.stateMutator();
+            // this.props.stateMutator();
 
             this.props.signIn();
           })
@@ -48,19 +44,26 @@ const SignUp = React.createClass({
         console.log(err);
       });
   },
+blah2() {
+  if (this.props.isLoggedIn) {
+  return <Redirect to="/user" />
+} else {
+  return <div id="signin-signup">
 
+    <h3>Sign Up</h3>
+      <form onSubmit={this.handleSubmit}>
+      <input placeholder="Email" name="email" type="email" onChange={this.handleChange} />
+      <input placeholder="First name" name="first_name" type="text" onChange={this.handleChange} />
+      <input placeholder="Last name" name="last_name" type="text" onChange={this.handleChange} />
+      <input placeholder="Password" name="password" type="password" onChange={this.handleChange} />
+      <button type="submit">Sign up</button>
+    </form>
+  </div>
+}
+},
   render() {
     return (
-      <section>
-        <h3>Sign Up</h3>
-        <form>
-          <input placeholder="Email" name="email" type="email" onChange={this.handleChange} />
-          <input placeholder="First name" name="first_name" type="text" onChange={this.handleChange} />
-          <input placeholder="Last name" name="last_name" type="text" onChange={this.handleChange} />
-          <input placeholder="Password" name="password" type="password" onChange={this.handleChange} />
-          <input type="submit" value="Sign Up" />
-        </form>
-      </section>
+      <this.blah2/>
     )
   }
 });
