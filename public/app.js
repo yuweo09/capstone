@@ -624,7 +624,6 @@ var Main = _react2.default.createClass({
             stateMutator: _this.props.stateMutator
           });
         } }),
-      _react2.default.createElement(_reactRouter.Miss, { component: _NotFound2.default }),
       _react2.default.createElement(_reactRouter.Match, { pattern: '/user', render: function render() {
           return _react2.default.createElement(_User2.default, null);
         } }),
@@ -633,7 +632,8 @@ var Main = _react2.default.createClass({
         } }),
       _react2.default.createElement(_reactRouter.Match, { pattern: '/projectpost', exactly: true, render: function render() {
           return _react2.default.createElement(ProjectPost, null);
-        } })
+        } }),
+      _react2.default.createElement(_reactRouter.Miss, { component: _NotFound2.default })
     );
   }
 });
@@ -767,8 +767,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-// import { Button, Header, Image, Modal, Form,Select,Input, Card, Icon} from 'semantic-ui-react'
-
 var ProjectPost = _react2.default.createClass({
   displayName: 'ProjectPost',
   getInitialState: function getInitialState() {
@@ -776,20 +774,19 @@ var ProjectPost = _react2.default.createClass({
       projectPost: {
         title: '',
         description: ''
-
       }
     };
   },
   handleChange: function handleChange() {
     this.setState(_defineProperty({}, event.target.name, event.target.value));
   },
-  componentDidMount: function componentDidMount() {},
   post: function post() {
     event.preventDefault();
 
     var data = { title: this.state.title,
       description: this.state.description
     };
+
     _axios2.default.post('/users/board', data).then(function (res) {
       // this.props.stateMutator();
       // this.setState({loggedIn: true});
@@ -858,6 +855,7 @@ var SignIn = _react2.default.createClass({
     var data = { email: this.state.email,
       password: this.state.password
     };
+
     _axios2.default.post('/token', data).then(function (res) {
       // this.props.stateMutator();
       _this.props.signIn();
@@ -873,7 +871,7 @@ var SignIn = _react2.default.createClass({
 
     this.setState({ loggedIn: true });
   },
-  blah: function blah() {
+  signInForm: function signInForm() {
     if (this.props.isLoggedIn) {
       return _react2.default.createElement(_reactRouter.Redirect, { to: '/user' });
     } else {
@@ -900,17 +898,7 @@ var SignIn = _react2.default.createClass({
     }
   },
   render: function render() {
-    return _react2.default.createElement(this.blah, null)
-    // <section>
-    //   <br />
-    //   <h3>Sign In</h3>
-    //   <form onSubmit={this.handleSubmit}>
-    //     <input placeholder="Email" name="email" type="email" onChange={this.handleChange} />
-    //     <input placeholder="Password" name="password" type="password" onChange={this.handleChange} />
-    //     <input type="submit" value="Sign In"/>
-    //   </form>
-    // </section>
-    ;
+    return _react2.default.createElement(this.signInForm, null);
   }
 });
 
@@ -937,8 +925,6 @@ var _reactRouter = require('react-router');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-// import { Button, Header, Image, Modal, Form, Select, Input} from 'semantic-ui-react'
-
 
 var SignUp = _react2.default.createClass({
   displayName: 'SignUp',
@@ -957,6 +943,7 @@ var SignUp = _react2.default.createClass({
     var _this = this;
 
     event.preventDefault();
+
     var data = { email: this.state.email,
       first_name: this.state.first_name,
       last_name: this.state.last_name,
@@ -978,7 +965,7 @@ var SignUp = _react2.default.createClass({
       console.log(err);
     });
   },
-  blah2: function blah2() {
+  signUpForm: function signUpForm() {
     if (this.props.isLoggedIn) {
       return _react2.default.createElement(_reactRouter.Redirect, { to: '/user' });
     } else {
@@ -1007,7 +994,7 @@ var SignUp = _react2.default.createClass({
     }
   },
   render: function render() {
-    return _react2.default.createElement(this.blah2, null);
+    return _react2.default.createElement(this.signUpForm, null);
   }
 });
 
