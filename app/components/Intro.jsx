@@ -43,14 +43,14 @@ componentDidMount(){
    <Grid.Column> */}
      <SignUp handleSignUpSubmit={this.handleSignUpSubmit}
             isLoggedIn={this.props.isLoggedIn}
-            signIn={this.signIn}
+            signIn={this.props.signIn}
             stateMutator={this.props.stateMutator}
      />
    {/* </Grid.Column>
    <Grid.Column> */}
      <SignIn
        isLoggedIn={this.props.isLoggedIn}
-       signIn={this.signIn}
+       signIn={this.props.signIn}
          stateMutator={this.props.stateMutator}
      />
    {/* </Grid.Column> */}

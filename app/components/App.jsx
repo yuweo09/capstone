@@ -68,7 +68,7 @@ const App = React.createClass({
     this.setState({ isLoggedIn: true });
     if(this.state.isLoggedIn) {
       this.getCurrentUser();
-      this.getAllForum();
+      // this.getAllForum();
       return <Redirect to="/user" />
     }else{
       return <Redirect to="/intro" />

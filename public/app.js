@@ -262,7 +262,7 @@ var App = _react2.default.createClass({
     this.setState({ isLoggedIn: true });
     if (this.state.isLoggedIn) {
       this.getCurrentUser();
-      this.getAllForum();
+      // this.getAllForum();
       return _react2.default.createElement(_reactRouter.Redirect, { to: '/user' });
     } else {
       return _react2.default.createElement(_reactRouter.Redirect, { to: '/intro' });
@@ -487,12 +487,12 @@ var Intro = _react2.default.createClass({
       null,
       _react2.default.createElement(_SignUp2.default, { handleSignUpSubmit: this.handleSignUpSubmit,
         isLoggedIn: this.props.isLoggedIn,
-        signIn: this.signIn,
+        signIn: this.props.signIn,
         stateMutator: this.props.stateMutator
       }),
       _react2.default.createElement(_SignIn2.default, {
         isLoggedIn: this.props.isLoggedIn,
-        signIn: this.signIn,
+        signIn: this.props.signIn,
         stateMutator: this.props.stateMutator
       }),
       _react2.default.createElement('ul', { id: 'link-options' })
