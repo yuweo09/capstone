@@ -1,13 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import SignUp from './SignUp';
-// import Header from './layout/Header';
 import { Link, Redirect } from 'react-router';
-import { Button, Header, Image, Modal, Form,Select,Input} from 'semantic-ui-react'
 
 const SignIn = React.createClass({
   getInitialState() {
     const loggedIn = this.props.isLoggedIn;
+
     return this.state = { email: '', password: '', loggedIn };
   },
 
@@ -17,13 +16,16 @@ const SignIn = React.createClass({
 
   handleSubmit(event) {
     event.preventDefault();
+
     let data = { email: this.state.email,
       password: this.state.password
     };
     axios.post('/token', data)
       .then(res => {
+        this.props.stateMutator();
         this.props.signIn();
         this.setState({loggedIn: true});
+        this.props.signIn;
       })
       .catch(err => {
         console.error(err);
@@ -32,38 +34,22 @@ const SignIn = React.createClass({
 
   handleSignUpSubmit() {
     this.props.signIn();
+    this.props.stateMutator();
+
     this.setState({loggedIn: true});
-  },
-
-  SignInOrSignUp() {
-    if (this.state.loggedIn) {
-      return <Redirect to="/" />
-    } else {
-      return <div>
-        <Modal trigger={<Button>Log In</Button>}>
-          <Modal.Header>Brand Yourself</Modal.Header>
-          <Modal.Content >
-            <Modal.Description>
-              <Header>Sign In</Header>
-               <Form onSubmit={this.handleSubmit}>
-                 {/* <Form.Input label='Name' name='name' placeholder='Name' /> */}
-                 <input placeholder="Email" name="email" type="email" onChange={this.handleChange} />
-                 <input placeholder="Password" name="password" type="password" onChange={this.handleChange} />
-                 {/* <button type="submit">SUBMIT</button> */}
-                 <Button>Log In</Button>
-              </Form>
-
-            </Modal.Description>
-          </Modal.Content>
-        </Modal>
-      </div>
-    }
   },
 
   render() {
     return (
-
-        <this.SignInOrSignUp />
+      <section>
+        <br />
+        <h3>Sign In</h3>
+        <form onSubmit={this.handleSubmit}>
+          <input placeholder="Email" name="email" type="email" onChange={this.handleChange} />
+          <input placeholder="Password" name="password" type="password" onChange={this.handleChange} />
+          <input type="submit" value="Sign In"/>
+        </form>
+      </section>
     )
   }
 });

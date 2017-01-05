@@ -3,9 +3,13 @@ import React from 'react';
 const Footer = React.createClass({
   render() {
     return (
-      <footer>
-        <p>By Karl Watson</p>
-      </footer>
+      <footer className="blue darken-3 page-footer">
+  <div className="footer-copyright">
+    <div className="container">
+      © 2016 KWH
+    </div>
+  </div>
+</footer>
     )
   }
 });

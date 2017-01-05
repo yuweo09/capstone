@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Button, Header, Image, Modal, Form,Select,Input, Card, Icon} from 'semantic-ui-react'
+// import { Button, Header, Image, Modal, Form,Select,Input, Card, Icon} from 'semantic-ui-react'
 
 const ProjectBoard = React.createClass({
   getInitialState() {
@@ -11,16 +11,16 @@ const ProjectBoard = React.createClass({
       }
     }
   },
-// componentDidMount() {
-//   axios.get('/users/board')
-//     .then(res => {
-//       this.setState({ projectBoard: res.data });
-//     })
-//     .catch(err => {
-//       console.log('hey');
-//       this.setState({ loadErr: err });
-//     });
-// },
+componentDidMount() {
+  axios.get('/users/board')
+    .then(res => {
+      this.setState({ projectBoard: res.data });
+    })
+    .catch(err => {
+      console.log('hey');
+      this.setState({ loadErr: err });
+    });
+},
 
   render() {
     return (

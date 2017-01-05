@@ -215,6 +215,9 @@ var App = _react2.default.createClass({
       forumPost: {}
     };
   },
+  stateMutator: function stateMutator() {
+    this.setState({ isLoggedIn: true });
+  },
   getAllForum: function getAllForum() {
     var _this = this;
 
@@ -260,9 +263,9 @@ var App = _react2.default.createClass({
     if (this.state.isLoggedIn) {
       this.getCurrentUser();
       this.getAllForum();
-      return _react2.default.createElement(Redirect, { to: '/user' });
+      return _react2.default.createElement(_reactRouter.Redirect, { to: '/user' });
     } else {
-      return _react2.default.createElement(Redirect, { to: '/intro' });
+      return _react2.default.createElement(_reactRouter.Redirect, { to: '/intro' });
     }
     // this.getAllUsers();
     // this.getUserScores();
@@ -293,7 +296,8 @@ var App = _react2.default.createClass({
           signOut: this.signOut,
           signIn: this.signIn,
           getCurrentUser: this.getCurrentUser,
-          getAllForum: this.getAllForum
+          getAllForum: this.getAllForum,
+          stateMutator: this.stateMutator
 
         })),
         _react2.default.createElement(_Footer2.default, null)
@@ -429,8 +433,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = require('react-router');
 
-var _semanticUiReact = require('semantic-ui-react');
-
 var _SignUp = require('./SignUp');
 
 var _SignUp2 = _interopRequireDefault(_SignUp);
@@ -441,6 +443,7 @@ var _SignIn2 = _interopRequireDefault(_SignIn);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import { Button, Header, Image, Modal, Form, Select, Input, Grid} from 'semantic-ui-react'
 var Intro = _react2.default.createClass({
   displayName: 'Intro',
   IsLoggedIn: function IsLoggedIn() {
@@ -456,6 +459,7 @@ var Intro = _react2.default.createClass({
     }
   },
   handleSignUpSubmit: function handleSignUpSubmit() {
+    this.props.stateMutator();
     this.props.signIn();
     this.setState({ loggedIn: true });
   },
@@ -481,16 +485,16 @@ var Intro = _react2.default.createClass({
     return _react2.default.createElement(
       'main',
       null,
-      _react2.default.createElement(
-        _semanticUiReact.Grid.Row,
-        { columns: 2 },
-        _react2.default.createElement(_semanticUiReact.Grid.Column, null),
-        _react2.default.createElement(
-          _semanticUiReact.Grid.Column,
-          null,
-          _react2.default.createElement(_SignIn2.default, null)
-        )
-      ),
+      _react2.default.createElement(_SignUp2.default, { handleSignUpSubmit: this.handleSignUpSubmit,
+        isLoggedIn: this.props.isLoggedIn,
+        signIn: this.signIn,
+        stateMutator: this.props.stateMutator
+      }),
+      _react2.default.createElement(_SignIn2.default, {
+        isLoggedIn: this.props.isLoggedIn,
+        signIn: this.signIn,
+        stateMutator: this.props.stateMutator
+      }),
       _react2.default.createElement('ul', { id: 'link-options' })
     );
   }
@@ -505,8 +509,6 @@ require.register("components/Main.jsx", function(exports, require, module) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _Intro = require('./Intro');
 
@@ -627,19 +629,17 @@ var Main = _react2.default.createClass({
       null,
       _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
           return _react2.default.createElement(_Intro2.default, {
-            signOut: _this.signOut
+            signOut: _this.signOut,
+            isLoggedIn: _this.props.isLoggedIn,
+            signIn: _this.signIn,
+            stateMutator: _this.props.stateMutator
           });
-        } }),
-      _react2.default.createElement(_reactRouter.Match, { pattern: '/signin', exactly: true, render: function render() {
-          return _react2.default.createElement(_SignIn2.default, _extends({}, _this.props, {
-            signIn: _this.signIn
-          }));
         } }),
       _react2.default.createElement(_reactRouter.Miss, { component: _NotFound2.default }),
       _react2.default.createElement(_reactRouter.Match, { pattern: '/user', render: function render() {
-          return _react2.default.createElement(_User2.default, _this.props);
+          return _react2.default.createElement(_User2.default, null);
         } }),
-      _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
+      _react2.default.createElement(_reactRouter.Match, { pattern: '/projectboard', exactly: true, render: function render() {
           return _react2.default.createElement(_ProjectBoard2.default, null);
         } })
     );
@@ -650,60 +650,32 @@ exports.default = Main;
 });
 
 require.register("components/ModalBasicExample.jsx", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _semanticUiReact = require('semantic-ui-react');
-
-var _reactRouter = require('react-router');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var ModalBasicExample = function ModalBasicExample() {
-  return _react2.default.createElement(
-    _semanticUiReact.Modal,
-    { trigger: _react2.default.createElement(
-        _semanticUiReact.Button,
-        null,
-        'Basic Modal'
-      ), basic: true, size: 'small' },
-    _react2.default.createElement(_semanticUiReact.Header, { icon: 'archive', content: 'Archive Old Messages' }),
-    _react2.default.createElement(
-      _semanticUiReact.Modal.Content,
-      null,
-      _react2.default.createElement(
-        'p',
-        null,
-        'Your inbox is getting full, would you like us to enable automatic archiving of old messages?'
-      )
-    ),
-    _react2.default.createElement(
-      _semanticUiReact.Modal.Actions,
-      null,
-      _react2.default.createElement(
-        _semanticUiReact.Button,
-        { basic: true, color: 'red', inverted: true },
-        _react2.default.createElement(_semanticUiReact.Icon, { name: 'remove' }),
-        ' No'
-      ),
-      _react2.default.createElement(
-        _semanticUiReact.Button,
-        { color: 'green', inverted: true },
-        _react2.default.createElement(_semanticUiReact.Icon, { name: 'checkmark' }),
-        ' Yes'
-      )
-    )
-  );
-};
-
-exports.default = ModalBasicExample;
+// import React from 'react'
+// import { Button, Header, Icon, Modal } from 'semantic-ui-react'
+// import { Match } from 'react-router';
+// import { Link, Redirect } from 'react-router';
+//
+// const ModalBasicExample = () => (
+//   <Modal trigger={<Button>Basic Modal</Button>} basic size='small'>
+//     <Header icon='archive' content='Archive Old Messages' />
+//     <Modal.Content>
+//       <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+//     </Modal.Content>
+//     <Modal.Actions>
+//       <Button basic color='red' inverted>
+//         <Icon name='remove' /> No
+//       </Button>
+//       <Button color='green' inverted>
+//         <Icon name='checkmark' /> Yes
+//       </Button>
+//     </Modal.Actions>
+//   </Modal>
+//
+//
+// )
+//
+// export default ModalBasicExample
+"use strict";
 });
 
 ;require.register("components/NotFound.jsx", function(exports, require, module) {
@@ -752,9 +724,9 @@ var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _semanticUiReact = require('semantic-ui-react');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import { Button, Header, Image, Modal, Form,Select,Input, Card, Icon} from 'semantic-ui-react'
 
 var ProjectBoard = _react2.default.createClass({
   displayName: 'ProjectBoard',
@@ -766,18 +738,16 @@ var ProjectBoard = _react2.default.createClass({
       }
     };
   },
+  componentDidMount: function componentDidMount() {
+    var _this = this;
 
-  // componentDidMount() {
-  //   axios.get('/users/board')
-  //     .then(res => {
-  //       this.setState({ projectBoard: res.data });
-  //     })
-  //     .catch(err => {
-  //       console.log('hey');
-  //       this.setState({ loadErr: err });
-  //     });
-  // },
-
+    _axios2.default.get('/users/board').then(function (res) {
+      _this.setState({ projectBoard: res.data });
+    }).catch(function (err) {
+      console.log('hey');
+      _this.setState({ loadErr: err });
+    });
+  },
   render: function render() {
     return _react2.default.createElement('div', null);
   }
@@ -807,18 +777,15 @@ var _SignUp2 = _interopRequireDefault(_SignUp);
 
 var _reactRouter = require('react-router');
 
-var _semanticUiReact = require('semantic-ui-react');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-// import Header from './layout/Header';
-
 
 var SignIn = _react2.default.createClass({
   displayName: 'SignIn',
   getInitialState: function getInitialState() {
     var loggedIn = this.props.isLoggedIn;
+
     return this.state = { email: '', password: '', loggedIn: loggedIn };
   },
   handleChange: function handleChange(event) {
@@ -828,69 +795,43 @@ var SignIn = _react2.default.createClass({
     var _this = this;
 
     event.preventDefault();
+
     var data = { email: this.state.email,
       password: this.state.password
     };
     _axios2.default.post('/token', data).then(function (res) {
+      _this.props.stateMutator();
       _this.props.signIn();
       _this.setState({ loggedIn: true });
+      _this.props.signIn;
     }).catch(function (err) {
       console.error(err);
     });
   },
   handleSignUpSubmit: function handleSignUpSubmit() {
     this.props.signIn();
+    this.props.stateMutator();
+
     this.setState({ loggedIn: true });
   },
-  SignInOrSignUp: function SignInOrSignUp() {
-    if (this.state.loggedIn) {
-      return _react2.default.createElement(_reactRouter.Redirect, { to: '/' });
-    } else {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          _semanticUiReact.Modal,
-          { trigger: _react2.default.createElement(
-              _semanticUiReact.Button,
-              null,
-              'Log In'
-            ) },
-          _react2.default.createElement(
-            _semanticUiReact.Modal.Header,
-            null,
-            'Brand Yourself'
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Modal.Content,
-            null,
-            _react2.default.createElement(
-              _semanticUiReact.Modal.Description,
-              null,
-              _react2.default.createElement(
-                _semanticUiReact.Header,
-                null,
-                'Sign In'
-              ),
-              _react2.default.createElement(
-                _semanticUiReact.Form,
-                { onSubmit: this.handleSubmit },
-                _react2.default.createElement('input', { placeholder: 'Email', name: 'email', type: 'email', onChange: this.handleChange }),
-                _react2.default.createElement('input', { placeholder: 'Password', name: 'password', type: 'password', onChange: this.handleChange }),
-                _react2.default.createElement(
-                  _semanticUiReact.Button,
-                  null,
-                  'Log In'
-                )
-              )
-            )
-          )
-        )
-      );
-    }
-  },
   render: function render() {
-    return _react2.default.createElement(this.SignInOrSignUp, null);
+    return _react2.default.createElement(
+      'section',
+      null,
+      _react2.default.createElement('br', null),
+      _react2.default.createElement(
+        'h3',
+        null,
+        'Sign In'
+      ),
+      _react2.default.createElement(
+        'form',
+        { onSubmit: this.handleSubmit },
+        _react2.default.createElement('input', { placeholder: 'Email', name: 'email', type: 'email', onChange: this.handleChange }),
+        _react2.default.createElement('input', { placeholder: 'Password', name: 'password', type: 'password', onChange: this.handleChange }),
+        _react2.default.createElement('input', { type: 'submit', value: 'Sign In' })
+      )
+    );
   }
 });
 
@@ -912,11 +853,13 @@ var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _semanticUiReact = require('semantic-ui-react');
+var _reactRouter = require('react-router');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+// import { Button, Header, Image, Modal, Form, Select, Input} from 'semantic-ui-react'
+
 
 var SignUp = _react2.default.createClass({
   displayName: 'SignUp',
@@ -927,6 +870,9 @@ var SignUp = _react2.default.createClass({
       last_name: '',
       password: ''
     };
+  },
+  componentDidMount: function componentDidMount() {
+    $('#modal1').modal('open');
   },
   handleChange: function handleChange(event) {
     this.setState(_defineProperty({}, event.target.name, event.target.value));
@@ -945,7 +891,10 @@ var SignUp = _react2.default.createClass({
       console.log('successfully posted user');
       _axios2.default.post('/token', data).then(function (res) {
         console.log('successfully posted token');
-        _this.props.handleSignUpSubmit();
+        // this.props.handleSignUpSubmit();
+        _this.props.stateMutator();
+
+        _this.props.signIn();
       }).catch(function (err) {
         console.error(err);
       });
@@ -953,60 +902,24 @@ var SignUp = _react2.default.createClass({
       console.log(err);
     });
   },
-  signUP: function signUP() {
-    if (this.props.isLoggedIn) {
-      return _react2.default.createElement(Redirect, { to: '/' });
-    } else {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          _semanticUiReact.Modal,
-          { trigger: _react2.default.createElement(
-              _semanticUiReact.Button,
-              null,
-              'Log In'
-            ) },
-          _react2.default.createElement(
-            _semanticUiReact.Modal.Header,
-            null,
-            'Brand Yourself'
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Modal.Content,
-            null,
-            _react2.default.createElement(
-              _semanticUiReact.Modal.Description,
-              null,
-              _react2.default.createElement(
-                _semanticUiReact.Header,
-                null,
-                'Sign In'
-              ),
-              _react2.default.createElement(
-                _semanticUiReact.Form,
-                { onSubmit: this.handleSubmit },
-                _react2.default.createElement('input', { placeholder: 'Email', name: 'email', type: 'email', onChange: this.handleChange }),
-                _react2.default.createElement('input', { placeholder: 'First name', name: 'first_name', type: 'text', onChange: this.handleChange }),
-                _react2.default.createElement('input', { placeholder: 'Last name', name: 'last_name', type: 'text', onChange: this.handleChange }),
-                _react2.default.createElement('input', { placeholder: 'Password', name: 'password', type: 'password', onChange: this.handleChange }),
-                _react2.default.createElement(
-                  _semanticUiReact.Button,
-                  null,
-                  'Log In'
-                )
-              )
-            )
-          )
-        )
-      );
-    }
-  },
   render: function render() {
     return _react2.default.createElement(
-      'div',
+      'section',
       null,
-      _react2.default.createElement(this.SignUP, null)
+      _react2.default.createElement(
+        'h3',
+        null,
+        'Sign Up'
+      ),
+      _react2.default.createElement(
+        'form',
+        null,
+        _react2.default.createElement('input', { placeholder: 'Email', name: 'email', type: 'email', onChange: this.handleChange }),
+        _react2.default.createElement('input', { placeholder: 'First name', name: 'first_name', type: 'text', onChange: this.handleChange }),
+        _react2.default.createElement('input', { placeholder: 'Last name', name: 'last_name', type: 'text', onChange: this.handleChange }),
+        _react2.default.createElement('input', { placeholder: 'Password', name: 'password', type: 'password', onChange: this.handleChange }),
+        _react2.default.createElement('input', { type: 'submit', value: 'Sign Up' })
+      )
     );
   }
 });
@@ -1132,7 +1045,7 @@ var User = _react2.default.createClass({
                 _react2.default.createElement(
                   _reactRouter.Link,
                   { to: '/user/score' },
-                  'Score'
+                  'bthe'
                 )
               )
             )
@@ -1172,28 +1085,32 @@ exports.default = User;
 });
 
 require.register("components/layout/Footer.jsx", function(exports, require, module) {
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Footer = _react2.default.createClass({
-  displayName: 'Footer',
+  displayName: "Footer",
   render: function render() {
     return _react2.default.createElement(
-      'footer',
-      null,
+      "footer",
+      { className: "blue darken-3 page-footer" },
       _react2.default.createElement(
-        'p',
-        null,
-        'By Karl Watson'
+        "div",
+        { className: "footer-copyright" },
+        _react2.default.createElement(
+          "div",
+          { className: "container" },
+          "\xA9 2016 KWH"
+        )
       )
     );
   }
@@ -1215,50 +1132,63 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = require('react-router');
 
-var _semanticUiReact = require('semantic-ui-react');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import { Button, Image, Modal, Form,Select,Input,Menu} from 'semantic-ui-react'
 
 var Header = _react2.default.createClass({
   displayName: 'Header',
   signOut: function signOut() {
-    // return this.props.signOut();
+    return this.props.signOut();
   },
   render: function render() {
     return _react2.default.createElement(
-      _semanticUiReact.Menu,
+      'nav',
       null,
       _react2.default.createElement(
-        _semanticUiReact.Menu.Item,
-        {
-          name: 'editorials',
-          active: 'editorials',
-          onClick: this.handleItemClick
-        },
-        'Editorials'
-      ),
-      _react2.default.createElement(
-        _semanticUiReact.Menu.Item,
-        {
-          name: 'reviews',
-          active: 'reviews',
-          onClick: this.handleItemClick
-        },
-        'Reviews'
-      ),
-      _react2.default.createElement(
-        _semanticUiReact.Menu.Item,
-        {
-          name: 'upcomingEvents',
-          active: 'upcomingEvents',
-          onClick: this.handleItemClick
-        },
-        'Upcoming Events'
+        'div',
+        { className: 'nav-wrapper' },
+        _react2.default.createElement(
+          'a',
+          { href: '#', className: 'brand-logo' },
+          'Logo'
+        ),
+        _react2.default.createElement(
+          'ul',
+          { id: 'nav-mobile', className: 'right hide-on-med-and-down' },
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              'a',
+              { href: 'sass.html' },
+              'Sass'
+            )
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              'a',
+              { href: 'badges.html' },
+              'Components'
+            )
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              'a',
+              { href: 'collapsible.html' },
+              'JavaScript'
+            )
+          )
+        )
       )
     );
   }
 });
-
+// import { Lin} from 'react-router';
 exports.default = Header;
 });
 
@@ -1282,7 +1212,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById('app'));
 });
 
-require.alias("buffer/index.js", "buffer");
 require.alias("process/browser.js", "process");process = require('process');require.register("___globals___", function(exports, require, module) {
   
 });})();require('___globals___');

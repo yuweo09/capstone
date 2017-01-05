@@ -90,15 +90,18 @@ const Main = React.createClass({
         <Match pattern="/" exactly render={
           () => <Intro
                   signOut={this.signOut}
+                  isLoggedIn={this.props.isLoggedIn}
+                  signIn={this.signIn}
+                  stateMutator={this.props.stateMutator}
                 /> } />
-        <Match pattern="/signin" exactly render={
+        {/* <Match pattern="/signin" exactly render={
           () => <SignIn
                   { ...this.props }
                   signIn={this.signIn}
-                /> } />
+                /> } /> */}
         <Miss component={NotFound} />
-        <Match pattern="/user"  render={ () => <User { ...this.props } /> } />
-        <Match pattern="/" exactly render={
+        <Match pattern="/user"  render={ () => <User  /> } />
+        <Match pattern="/projectboard" exactly render={
           () => <ProjectBoard
                 /> } />
       </main>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router';
-import { Button, Header, Image, Modal, Form, Select, Input, Grid} from 'semantic-ui-react'
+// import { Button, Header, Image, Modal, Form, Select, Input, Grid} from 'semantic-ui-react'
 import SignUp from './SignUp';
 import SignIn from './SignIn';
 
@@ -15,6 +15,7 @@ const Intro = React.createClass({
     }
   },
   handleSignUpSubmit() {
+    this.props.stateMutator();
     this.props.signIn();
     this.setState({loggedIn: true});
   },
@@ -25,6 +26,8 @@ componentDidMount(){
 
 
 },
+
+
   SignOut() {
     if (this.props.isLoggedIn === true) {
 
@@ -36,14 +39,22 @@ componentDidMount(){
   render() {
     return (
       <main>
-        <Grid.Row columns={2}>
-   <Grid.Column>
-     {/* <SignUp handleSignUpSubmit={this.handleSignUpSubmit}/> */}
-   </Grid.Column>
-   <Grid.Column>
-     <SignIn/>
-   </Grid.Column>
- </Grid.Row>
+        {/* <Grid.Row columns={2}>
+   <Grid.Column> */}
+     <SignUp handleSignUpSubmit={this.handleSignUpSubmit}
+            isLoggedIn={this.props.isLoggedIn}
+            signIn={this.signIn}
+            stateMutator={this.props.stateMutator}
+     />
+   {/* </Grid.Column>
+   <Grid.Column> */}
+     <SignIn
+       isLoggedIn={this.props.isLoggedIn}
+       signIn={this.signIn}
+         stateMutator={this.props.stateMutator}
+     />
+   {/* </Grid.Column> */}
+ {/* </Grid.Row> */}
         <ul id="link-options">
           {/* <Link to='/play'><li>PLAY ON KEYBOARD</li></Link>
           <Link to='/airconsole'><li>PLAY ON AIR CONSOLE</li></Link> */}

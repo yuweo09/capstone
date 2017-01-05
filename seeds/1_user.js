@@ -16,7 +16,7 @@ exports.seed = function(knex) {
         updated_at: new Date('2016-11-25 16:17:12 UTC')
       }, {
         id: 2,
-        email: 'karlwatson',
+        email: 'karlwatson@gmail.com',
         first_name: 'karl',
         last_name: 'watson',
         rep_score:20,

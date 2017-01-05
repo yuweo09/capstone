@@ -11,6 +11,7 @@ import NotFound from './NotFound';
 import { Miss, Match } from 'react-router';
 import axios from 'axios';
 import ProjectBoard from './ProjectBoard';
+import { Link, Redirect } from 'react-router';
 
 const App = React.createClass({
   getInitialState() {
@@ -20,7 +21,9 @@ const App = React.createClass({
       forumPost: {}
     }
   },
-
+  stateMutator() {
+    this.setState({ isLoggedIn: true });
+  },
   getAllForum() {
     axios.get('/users/ft')
       .then(res => {
@@ -67,9 +70,9 @@ const App = React.createClass({
       this.getCurrentUser();
       this.getAllForum();
       return <Redirect to="/user" />
-  }else{
-    return <Redirect to="/intro" />
-  }
+    }else{
+      return <Redirect to="/intro" />
+    }
     // this.getAllUsers();
     // this.getUserScores();
   },
@@ -88,27 +91,26 @@ const App = React.createClass({
   },
 
 
-
-
-
-
-
   render() {
     return (
+
       <BrowserRouter>
         <div>
           <Header
             { ...this.state }
             signOut={this.signOut}
           />
+
           <Main
             { ...this.state }
             signOut={this.signOut}
             signIn={this.signIn}
             getCurrentUser={this.getCurrentUser}
             getAllForum={this.getAllForum}
+            stateMutator={this.stateMutator}
 
           />
+
           <Footer />
         </div>
       </BrowserRouter>
