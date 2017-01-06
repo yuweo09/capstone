@@ -45,4 +45,4 @@ const ProjectPost = React.createClass({
   }
 });
 
-export default ProjectBoard;
+export default ProjectPost;

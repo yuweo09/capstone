@@ -3,6 +3,7 @@ import Intro from './Intro';
 // import Score from './Score';
 // import Friends from './Friends';
 import Forum from './Forum';
+import ProjectPost from './ProjectPost';
 import Header from './layout/Header';
 import { Match } from 'react-router';
 import { Link, Redirect } from 'react-router';
@@ -77,7 +78,7 @@ const User = React.createClass({
   },
   render() {
     return (
-      <p>hi</p>
+      <ProjectPost />
     )
   }
 });

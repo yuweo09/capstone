@@ -3,7 +3,7 @@ import User from './User';
 import ModalBasicExample from './ModalBasicExample';
 import SignIn from './SignIn';
 import NotFound from './NotFound';
-import { Miss, Match } from 'react-router';
+import { Miss, Match, Redirect } from 'react-router';
 import React from 'react';
 import axios from 'axios';
 import ProjectBoard from './ProjectBoard';
@@ -88,21 +88,29 @@ const Main = React.createClass({
     return (
       <main>
         <Match pattern="/" exactly render={ () =>
-          <Intro
-            signOut={this.signOut}
-            isLoggedIn={this.props.isLoggedIn}
-            signIn={this.signIn}
-            stateMutator={this.props.stateMutator}
-          />
+          this.props.isLoggedIn ? (
+            <Redirect to="/projects" />
+          ) : (
+            <Intro
+              signOut={this.signOut}
+              isLoggedIn={this.props.isLoggedIn}
+              signIn={this.signIn}
+              stateMutator={this.props.stateMutator}
+            />
+          )
         } />
         <Match pattern="/user"  render={ () =>
           <User />
         } />
-        <Match pattern="/projectboard" exactly render={ () =>
-          <ProjectBoard />
+        <Match pattern="/projects" exactly render={ () =>
+          <ProjectBoard
+            currentUser= {this.props.currentUser} 
+            />
         } />
         <Match pattern="/projectpost" exactly render={ () =>
-          <ProjectPost />
+          <ProjectPost
+            currentUser= {this.props.currentUser}
+            />
         } />
         <Miss component={NotFound} />
       </main>

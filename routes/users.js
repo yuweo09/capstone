@@ -165,42 +165,6 @@ router.get('/users/:id', authorize, (req, res, next) => {
     });
 });
 
-// router.patch('/users', authorize, (req, res, next) => {
-//   const { userId } = req.token;
-//   const { newHighScore } = req.body;
-//
-//   knex('users')
-//     .where('id', userId)
-//     .first()
-//     .then((user) => {
-//       if (!user) {
-//         return next(boom.create(404, 'Not Found'));
-//       }
-//
-//       const { high_score } = user;
-//       const updateUser = {};
-//
-//       if (newHighScore > high_score) {
-//         updateUser.high_score = newHighScore;
-//
-//         return knex('users')
-//           .update(decamelizeKeys(updateUser))
-//           .where('id', userId);
-//       } else {
-//         return knex('users')
-//           .update(decamelizeKeys(updateUser))
-//           .where('id', userId);
-//       }
-//     })
-//     .then((row) => {
-//       const user = camelizeKeys(row[0]);
-//       res.send(user);
-//     })
-//     .catch((err) => {
-//       next(err);
-//     });
-// });
-
 router.post('/users',(req, res, next) => {
   const { email, first_name, last_name, rep_score, password} = req.body;
   console.log(first_name);
@@ -269,33 +233,17 @@ router.delete('/users', (req, res, next) => {
     });
 });
 //s
-router.get('/users/board', authorize, (req, res, next) => {
+router.get('/api/boards', authorize, (req, res, next) => {
   const { userId } = req.token;
+  console.log(userId);
+
 
   knex('project_board')
     .where('user_id', userId)
     .first()
     .then((row) => {
       if (!row) {
-        return next(boom.create(400, `No board at id ${userId}`));
-      }
-      res.send(camelizeKeys(row));
-    })
-    .catch((err) => {
-      next(err);
-    });
-});
-
-router.get('/users/boarda', authorize, (req, res, next) => {
-
-  const { userId } = req.token;
-
-  knex('project_activity')
-    .where('user_id', userId)
-    .first()
-    .then((row) => {
-      if (!row) {
-        return next(boom.create(400, `No board activity ${userId}`));
+        return next(boom.create(400, `No user at id ${userId}`));
       }
       res.send(camelizeKeys(row));
     })
@@ -321,22 +269,4 @@ router.get('/users/forum', authorize, (req, res, next) => {
     });
 });
 
-// router.get('/users/forumt', authorize, (req, res, next) => {
-//   console.log('here');
-//   const { userId } = req.token;
-//   const user_id = parseInt(userId);
-//   knex('forum_thread')
-//     .where('user_id', user_id)
-//     .first()
-//     .then((row) => {
-//       if (!row) {
-//         return next(boom.create(400, `No forun at id ${id}`));
-//       }
-//       res.send(camelizeKeys(row));
-//     })
-//     .catch((err) => {
-//       next(err);
-//     });
-//   res.send(true);
-// });
 module.exports = router;

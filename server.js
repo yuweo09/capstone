@@ -22,13 +22,15 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(morgan('short'));
 app.use(express.static(path.join('public')));
-app.use(users);
 app.use(token);
+app.use(users);
+
 app.use(boards);
 
 app.use((_req, res) => {
   res.sendStatus(404);
 });
+
 app.use((err, _req, res, _next) => {
   if (err.output && err.output.statusCode) {
     return res

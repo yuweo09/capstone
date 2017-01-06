@@ -26,7 +26,7 @@ router.get('/token', authorize, (req, res, next) => {
 });
 
 router.post('/token', (req, res, next) => {
-  console.log(req.body);
+  
     const { email, password } = req.body;
 
   let user;
