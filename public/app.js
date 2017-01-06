@@ -180,10 +180,6 @@ var _Intro = require('./Intro');
 
 var _Intro2 = _interopRequireDefault(_Intro);
 
-var _User = require('./User');
-
-var _User2 = _interopRequireDefault(_User);
-
 var _ModalBasicExample = require('./ModalBasicExample');
 
 var _ModalBasicExample2 = _interopRequireDefault(_ModalBasicExample);
@@ -212,8 +208,19 @@ var App = _react2.default.createClass({
     return {
       currentUser: {},
       isLoggedIn: false,
-      forumPost: {}
+      forumPost: {},
+      projects: [],
+      tasks: []
     };
+  },
+  addProject: function addProject(project) {
+    console.log(project, ' PROJECT');
+    var nextProjects = this.state.projects.concat(project);
+    this.setState({ projects: nextProjects });
+  },
+  addTask: function addTask(task) {
+    var nextTasks = this.state.tasks.concat(task);
+    this.setState({ tasks: nextTasks });
   },
   stateMutator: function stateMutator() {
     this.setState({ isLoggedIn: true });
@@ -286,7 +293,9 @@ var App = _react2.default.createClass({
           signIn: this.signIn,
           getCurrentUser: this.getCurrentUser,
           getAllForum: this.getAllForum,
-          stateMutator: this.stateMutator
+          stateMutator: this.stateMutator,
+          addProject: this.addProject,
+          addTask: this.addTask
 
         })),
         _react2.default.createElement(_Footer2.default, null)
@@ -503,9 +512,9 @@ var _Intro = require('./Intro');
 
 var _Intro2 = _interopRequireDefault(_Intro);
 
-var _User = require('./User');
+var _ProjectFeed = require('./ProjectFeed');
 
-var _User2 = _interopRequireDefault(_User);
+var _ProjectFeed2 = _interopRequireDefault(_ProjectFeed);
 
 var _ModalBasicExample = require('./ModalBasicExample');
 
@@ -532,6 +541,14 @@ var _axios2 = _interopRequireDefault(_axios);
 var _ProjectBoard = require('./ProjectBoard');
 
 var _ProjectBoard2 = _interopRequireDefault(_ProjectBoard);
+
+var _ProjectActivity = require('./ProjectActivity');
+
+var _ProjectActivity2 = _interopRequireDefault(_ProjectActivity);
+
+var _ProjectPost = require('./ProjectPost');
+
+var _ProjectPost2 = _interopRequireDefault(_ProjectPost);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -617,24 +634,38 @@ var Main = _react2.default.createClass({
       'main',
       null,
       _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
-          return _this.props.isLoggedIn ? _react2.default.createElement(_reactRouter.Redirect, { to: '/projects' }) : _react2.default.createElement(_Intro2.default, {
+          return _this.props.isLoggedIn ? _react2.default.createElement(_reactRouter.Redirect, { to: '/project-feed' }) : _react2.default.createElement(_Intro2.default, {
             signOut: _this.signOut,
             isLoggedIn: _this.props.isLoggedIn,
             signIn: _this.signIn,
             stateMutator: _this.props.stateMutator
           });
         } }),
-      _react2.default.createElement(_reactRouter.Match, { pattern: '/user', render: function render() {
-          return _react2.default.createElement(_User2.default, null);
+      _react2.default.createElement(_reactRouter.Match, { pattern: '/project-feed', render: function render() {
+          return _react2.default.createElement(_ProjectFeed2.default, {
+            projects: _this.props.projects,
+            currentUser: _this.props.currentUser,
+            addProject: _this.props.addProject,
+            addTask: _this.props.addTask,
+            tasks: _this.props.tasks
+          });
         } }),
       _react2.default.createElement(_reactRouter.Match, { pattern: '/projects', exactly: true, render: function render() {
           return _react2.default.createElement(_ProjectBoard2.default, {
             currentUser: _this.props.currentUser
           });
         } }),
-      _react2.default.createElement(_reactRouter.Match, { pattern: '/projectpost', exactly: true, render: function render() {
-          return _react2.default.createElement(ProjectPost, {
-            currentUser: _this.props.currentUser
+      _react2.default.createElement(_reactRouter.Match, { pattern: '/projectactivity', exactly: true, render: function render() {
+          return _react2.default.createElement(_ProjectActivity2.default, {
+            currentUser: _this.props.currentUser,
+            addProject: _this.props.addProject
+          });
+        } }),
+      _react2.default.createElement(_reactRouter.Match, { pattern: '/create-project', exactly: true, render: function render() {
+          return _react2.default.createElement(_ProjectPost2.default, {
+            currentUser: _this.props.currentUser,
+            addProject: _this.props.addProject,
+            addTask: _this.props.addTask
           });
         } }),
       _react2.default.createElement(_reactRouter.Miss, { component: _NotFound2.default })
@@ -705,6 +736,92 @@ var NotFound = _react2.default.createClass({
 exports.default = NotFound;
 });
 
+require.register("components/ProjectActivity.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProjectActivity = _react2.default.createClass({
+  displayName: 'ProjectActivity',
+  getInitialState: function getInitialState() {
+    return {
+      projectActivity: {
+        task: '',
+        taskValue: 0
+      }
+    };
+  },
+  componentDidMount: function componentDidMount() {
+    var _this = this;
+
+    _axios2.default.get('/api/activity').then(function (res) {
+      _this.setState({ projectActivity: res.data });
+    }).catch(function (err) {
+      console.log('hey');
+      _this.setState({ loadErr: err });
+    });
+  },
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
+      { className: 'row' },
+      _react2.default.createElement(
+        'div',
+        { className: 'col s12 m6' },
+        _react2.default.createElement(
+          'div',
+          { className: 'card' },
+          _react2.default.createElement(
+            'div',
+            { className: 'card-content black-text' },
+            _react2.default.createElement(
+              'span',
+              { className: 'card-title' },
+              'Project Task: ',
+              this.state.projectActivity.task
+            ),
+            _react2.default.createElement(
+              'p',
+              null,
+              'Task Value:',
+              this.state.projectActivity.taskValue
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'card-action' },
+            _react2.default.createElement(
+              'a',
+              { href: '#' },
+              'View Task'
+            ),
+            _react2.default.createElement(
+              'a',
+              { href: '#' },
+              'Forum'
+            )
+          )
+        )
+      )
+    );
+  }
+});
+
+exports.default = ProjectActivity;
+});
+
 require.register("components/ProjectBoard.jsx", function(exports, require, module) {
 'use strict';
 
@@ -719,6 +836,8 @@ var _react2 = _interopRequireDefault(_react);
 var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
+
+var _reactRouter = require('react-router');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -771,8 +890,8 @@ var ProjectBoard = _react2.default.createClass({
             'div',
             { className: 'card-action' },
             _react2.default.createElement(
-              'a',
-              { href: '#' },
+              _reactRouter.Link,
+              { to: '/projectactivity' },
               'View Task'
             ),
             _react2.default.createElement(
@@ -783,30 +902,174 @@ var ProjectBoard = _react2.default.createClass({
           )
         )
       )
-    )
-    // <section>
-    //   <article>
-    //     <header>
-    //       <h4>Project Title: {this.state.projectBoard.title}</h4>
-    //       <h6>Creator: {this.props.currentUser.firstName}</h6>
-    //     </header>
-    //     <div>
-    //       Description: {this.state.projectBoard.description}
-    //     </div>
-    //     <div>
-    //
-    //     </div>
-    //     <div>
-    //       <button>View Task</button>
-    //       <button>Forum</button>
-    //     </div>
-    //   </article>
-    // </section>
-    ;
+    );
   }
 });
 
 exports.default = ProjectBoard;
+});
+
+require.register("components/ProjectCard.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _ViewTask = require('./ViewTask');
+
+var _ViewTask2 = _interopRequireDefault(_ViewTask);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProjectCard = _react2.default.createClass({
+  displayName: 'ProjectCard',
+  render: function render() {
+    console.log('creating project card');
+    return _react2.default.createElement(
+      'div',
+      { className: 'col s12 m4' },
+      _react2.default.createElement(
+        'div',
+        { className: 'card' },
+        _react2.default.createElement(
+          'div',
+          { className: 'card-content black-text' },
+          _react2.default.createElement(
+            'span',
+            { className: 'card-title' },
+            'Project Title: ',
+            this.props.title
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            'Description:',
+            this.props.description
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'card-action' },
+          _react2.default.createElement(_ViewTask2.default, {
+            projectId: this.props.projectId,
+            tasks: this.props.tasks
+          }),
+          _react2.default.createElement(
+            'a',
+            { href: '#' },
+            'Forum'
+          )
+        )
+      )
+    );
+  }
+});
+
+exports.default = ProjectCard;
+});
+
+require.register("components/ProjectFeed.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Intro = require('./Intro');
+
+var _Intro2 = _interopRequireDefault(_Intro);
+
+var _Forum = require('./Forum');
+
+var _Forum2 = _interopRequireDefault(_Forum);
+
+var _ProjectPost = require('./ProjectPost');
+
+var _ProjectPost2 = _interopRequireDefault(_ProjectPost);
+
+var _Header = require('./layout/Header');
+
+var _Header2 = _interopRequireDefault(_Header);
+
+var _reactRouter = require('react-router');
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _ProjectCard = require('./ProjectCard');
+
+var _ProjectCard2 = _interopRequireDefault(_ProjectCard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProjectFeed = _react2.default.createClass({
+  displayName: 'ProjectFeed',
+  getInitialState: function getInitialState() {
+    return {
+      ftext: ''
+    };
+  },
+  componentDidMount: function componentDidMount() {
+    var _this = this;
+
+    _axios2.default.get('/api/boards').then(function (res) {
+      var projects = res.data;
+      _this.props.addProject(projects);
+      _axios2.default.get('/api/activity').then(function (res) {
+        console.log(JSON.stringify(res.data) + 'RES DAYA');
+        _this.props.addTask(res.data);
+      }).catch(function (err) {
+        console.error(err);
+      });
+    }).catch(function (err) {
+      console.log(err);
+    });
+  },
+  projectCards: function projectCards() {
+    console.log(this.props.projects.length, ' LENGTH');
+    var projectCards = [];
+    for (var i = 0; i < this.props.projects.length; i++) {
+      projectCards.push(_react2.default.createElement(_ProjectCard2.default, {
+        key: i,
+        title: this.props.projects[i].title,
+        description: this.props.projects[i].description,
+        projectId: this.props.projects[i].id,
+        tasks: this.props.tasks
+      }));
+    }
+
+    return projectCards;
+  },
+  render: function render() {
+    // console.log(this.props.projects.legnth+ 'length');
+    if (this.props.projects.length === 0) {
+      return false;
+    }
+
+    return _react2.default.createElement(
+      'div',
+      { className: 'row' },
+      this.projectCards()
+    );
+  }
+});
+// import Score from './Score';
+// import Friends from './Friends';
+exports.default = ProjectFeed;
 });
 
 require.register("components/ProjectPost.jsx", function(exports, require, module) {
@@ -826,29 +1089,30 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 var ProjectPost = _react2.default.createClass({
   displayName: 'ProjectPost',
   getInitialState: function getInitialState() {
     return {
-      projectPost: {
-        title: '',
-        description: ''
-      }
+      posted: false,
+      projectId: null
     };
-  },
-  handleChange: function handleChange() {
-    this.setState(_defineProperty({}, event.target.name, event.target.value));
   },
   post: function post() {
+    var _this = this;
+
     event.preventDefault();
 
-    var data = { title: this.state.title,
-      description: this.state.description
+    var project = { title: this.refs.title.value,
+      description: this.refs.description.value
     };
 
-    _axios2.default.post('/users/board', data).then(function (res) {
+    _axios2.default.post('/users/board', project).then(function (res) {
+      _this.props.addProject(project);
+      _this.setState({ posted: true,
+        projectId: res.data[0].id
+      });
+      console.log(res.data);
+
       // this.props.stateMutator();
       // this.setState({loggedIn: true});
       // this.props.signIn;
@@ -856,21 +1120,189 @@ var ProjectPost = _react2.default.createClass({
       console.error(err);
     });
   },
-  render: function render() {
+  postActivity: function postActivity() {
+    var _this2 = this;
+
+    event.preventDefault();
+
+    var task = { task: this.refs.task.value,
+      taskValue: this.refs.taskValue.value,
+      projectId: this.state.projectId
+    };
+
+    _axios2.default.post('/api/activity', task).then(function (res) {
+      _this2.props.addTask(task);
+      _this2.refs.task.value = '';
+      _this2.refs.taskValue.value = '';
+    }).catch(function (err) {
+      console.error(err);
+    });
+  },
+  task: function task() {
+    if (this.state.posted === false) {
+      return;
+    }
     return _react2.default.createElement(
       'div',
       null,
+      _react2.default.createElement('input', { ref: 'task', placeholder: 'Task', name: 'task', type: 'text' }),
+      _react2.default.createElement('input', { ref: 'taskValue', placeholder: 'TaskValue', name: 'taskValue', type: 'number' }),
       _react2.default.createElement(
-        'form',
-        { onSubmit: this.post },
-        _react2.default.createElement('input', { placeholder: 'Project Title', name: 'title', type: 'text', onChange: this.handleChange }),
-        _react2.default.createElement('input', { placeholder: 'Project Description', name: 'description', type: 'text', onChange: this.handleChange })
+        'button',
+        { onClick: this.postActivity },
+        ' Post Task'
       )
+    );
+  },
+  postBoard: function postBoard() {
+    if (this.state.posted === true) {
+      return;
+    }
+
+    return _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement('input', { placeholder: 'Project Title', ref: 'title', name: 'title', type: 'text' }),
+      _react2.default.createElement('input', { placeholder: 'Project Description', ref: 'description', name: 'description', type: 'text' }),
+      _react2.default.createElement(
+        'button',
+        { onClick: this.post },
+        'Post'
+      )
+    );
+  },
+  render: function render() {
+    console.log(this.props.addProject);
+    return _react2.default.createElement(
+      'div',
+      null,
+      this.postBoard(),
+      this.task()
     );
   }
 });
 
 exports.default = ProjectPost;
+});
+
+require.register("components/ProjectTask.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProjectTask = _react2.default.createClass({
+  displayName: 'ProjectTask',
+  render: function render() {
+    console.log('creating project task');
+    return _react2.default.createElement(
+      'div',
+      { className: 'col s12' },
+      _react2.default.createElement(
+        'div',
+        { className: 'card' },
+        _react2.default.createElement(
+          'div',
+          { className: 'card-content black-text' },
+          _react2.default.createElement(
+            'span',
+            { className: 'card-title' },
+            'Task: ',
+            this.props.task
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            'Task Value:',
+            this.props.taskValue
+          )
+        )
+      )
+    );
+  }
+});
+
+exports.default = ProjectTask;
+});
+
+require.register("components/ProjectTasks.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Intro = require('./Intro');
+
+var _Intro2 = _interopRequireDefault(_Intro);
+
+var _Forum = require('./Forum');
+
+var _Forum2 = _interopRequireDefault(_Forum);
+
+var _ProjectPost = require('./ProjectPost');
+
+var _ProjectPost2 = _interopRequireDefault(_ProjectPost);
+
+var _Header = require('./layout/Header');
+
+var _Header2 = _interopRequireDefault(_Header);
+
+var _reactRouter = require('react-router');
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _ProjectTask = require('./ProjectTask');
+
+var _ProjectTask2 = _interopRequireDefault(_ProjectTask);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProjectTasks = _react2.default.createClass({
+  displayName: 'ProjectTasks',
+  projectTasks: function projectTasks() {
+    var projectTasks = [];
+    for (var i = 0; i < this.props.tasks.length; i++) {
+      projectTasks.push(_react2.default.createElement(_ProjectTask2.default, {
+        key: i,
+        task: this.props.tasks[i].task,
+        taskValue: this.props.tasks[i].taskValue
+
+      }));
+    }
+
+    console.log(projectTasks, ' PROJECT TASKS');
+
+    return projectTasks;
+  },
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
+      { className: 'row' },
+      this.projectTasks()
+    );
+  }
+});
+// import Score from './Score';
+// import Friends from './Friends';
+exports.default = ProjectTasks;
 });
 
 require.register("components/SignIn.jsx", function(exports, require, module) {
@@ -1124,7 +1556,7 @@ var SignUp = _react2.default.createClass({
 exports.default = SignUp;
 });
 
-require.register("components/User.jsx", function(exports, require, module) {
+require.register("components/ViewTask.jsx", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1135,98 +1567,60 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Intro = require('./Intro');
-
-var _Intro2 = _interopRequireDefault(_Intro);
-
-var _Forum = require('./Forum');
-
-var _Forum2 = _interopRequireDefault(_Forum);
-
-var _ProjectPost = require('./ProjectPost');
-
-var _ProjectPost2 = _interopRequireDefault(_ProjectPost);
-
-var _Header = require('./layout/Header');
-
-var _Header2 = _interopRequireDefault(_Header);
-
-var _reactRouter = require('react-router');
-
 var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _ProjectTasks = require('./ProjectTasks');
+
+var _ProjectTasks2 = _interopRequireDefault(_ProjectTasks);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import Score from './Score';
-// import Friends from './Friends';
-var User = _react2.default.createClass({
-  displayName: 'User',
+var ViewTask = _react2.default.createClass({
+  displayName: 'ViewTask',
   getInitialState: function getInitialState() {
-    return {
-      ftext: ''
-    };
+    return { clicked: false };
   },
-  componentDidMount: function componentDidMount() {
-    document.body.style.backgroundImage = "url('')";
+  changestate: function changestate() {
+    this.setState({ clicked: true });
   },
-  handleSubmit: function handleSubmit(event) {
-    event.preventDefault();
-    var data = { text: event.target.value };
+  tasks: function tasks(projectSpecificTasks) {
+    if (this.state.clicked === false) {
+      return;
+    }
 
-    _axios2.default.post('/users/forum', data).then(function (res) {
-      console.log('successfully posted forum');
-      _axios2.default.post('/users/forumt').then(function (res) {
-        console.log('successfully posted forumt');
-      }).catch(function (err) {
-        console.error(err);
-      });
-    }).catch(function (err) {
-      console.log(err);
+    console.log(projectSpecificTasks, ' PROJECT SPECIFIC TASKS');
+
+    return _react2.default.createElement(_ProjectTasks2.default, {
+      tasks: projectSpecificTasks
     });
-  },
-  handleSubmit2: function handleSubmit2(event) {
-    event.preventDefault();
-    _axios2.default.post('/users/board').then(function (res) {
-      console.log('successfully posted board');
-      _axios2.default.post('/users/boarda', res).then(function (res) {
-        console.log('successfully posted board activity');
-      }).catch(function (err) {
-        console.error(err);
-      });
-    }).catch(function (err) {
-      console.log(err);
-    });
-  },
-  handleSubmit3: function handleSubmit3(event) {
-    // event.preventDefault();
-    //
-    // axios.get('/users/forum')
-    //   .then(res => {
-    //     console.log('successfully retrieved forum');
-    //     axios.get('/users/forumt', res)
-    //       .then(res => {
-    //         console.log('in the are');
-    //         console.log(res);
-    //         this.setState({ftext: res.text});
-    //         console.log('successfully retrieved forum text');
-    //
-    //       })
-    //       .catch(err => {
-    //         console.error(err);
-    //       });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
   },
   render: function render() {
-    return _react2.default.createElement(_ProjectPost2.default, null);
+    var _this = this;
+
+    var projectSpecificTasks = this.props.tasks.filter(function (task) {
+      return task.projectId === _this.props.projectId;
+    });
+    console.log(projectSpecificTasks);
+    return _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        'button',
+        { onClick: this.changestate },
+        'View Task'
+      ),
+      _react2.default.createElement(
+        'div',
+        null,
+        this.tasks(projectSpecificTasks)
+      )
+    );
   }
 });
 
-exports.default = User;
+exports.default = ViewTask;
 });
 
 require.register("components/layout/Footer.jsx", function(exports, require, module) {
@@ -1313,7 +1707,20 @@ var Header = _react2.default.createClass({
           _react2.default.createElement(
             'li',
             null,
-            _react2.default.createElement('a', { href: 'badges.html' })
+            _react2.default.createElement(
+              _reactRouter.Link,
+              { to: '/create-project' },
+              'Post New Project'
+            )
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              _reactRouter.Link,
+              { to: '/projects' },
+              'Projects'
+            )
           ),
           _react2.default.createElement(
             'li',

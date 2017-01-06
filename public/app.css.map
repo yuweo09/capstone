@@ -1,1 +1,1 @@
-{"version":3,"sources":[],"names":[],"mappings":"","file":"public/app.css","sourcesContent":[]}
+{"version":3,"sources":["app/styles/index.css"],"names":[],"mappings":"AAAA;EACE,mBAAmB;EACnB,iBAAiB;CAClB;;AAED;EACE,iBAAiB;CAClB;;AAED;AACA,aAAa;AACb,YAAY;AACZ,mBAAmB;AACnB,UAAU;AACV,QAAQ;;CAEP","file":"public/app.css","sourcesContent":["html {\n  position: relative;\n  min-height: 100%;\n}\n\nbody {\n  margin: 0 0 65px;\n}\n\nfooter{\nheight: 65px;\nwidth: 100%;\nposition: absolute;\nbottom: 0;\nleft: 0;  \n\n}\n"]}

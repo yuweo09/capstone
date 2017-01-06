@@ -4,26 +4,26 @@ import axios from 'axios';
 const ProjectPost = React.createClass({
   getInitialState() {
     return {
-      projectPost: {
-        title:'',
-        description:'',
-      }
+      posted: false,
+      projectId:null
     }
-  },
-
-  handleChange() {
-    this.setState({[event.target.name]: event.target.value});
   },
 
   post() {
     event.preventDefault();
 
-    let data = { title: this.state.title,
-      description: this.state.description
+    let project = { title: this.refs.title.value,
+      description: this.refs.description.value
     };
 
-    axios.post('/users/board', data)
+    axios.post('/users/board', project)
       .then(res => {
+        this.props.addProject(project);
+        this.setState({posted: true,
+                      projectId:res.data[0].id
+        } );
+        console.log(res.data);
+
         // this.props.stateMutator();
         // this.setState({loggedIn: true});
         // this.props.signIn;
@@ -33,15 +33,60 @@ const ProjectPost = React.createClass({
       });
   },
 
-  render() {
+  postActivity() {
+    event.preventDefault();
+
+    let task = { task: this.refs.task.value,
+      taskValue: this.refs.taskValue.value,
+      projectId:this.state.projectId
+    };
+
+    axios.post('/api/activity', task)
+      .then(res => {
+        this.props.addTask(task);
+        this.refs.task.value = '';
+        this.refs.taskValue.value = '';
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  },
+
+  task() {
+    if(this.state.posted === false) {
+      return;
+    }
     return (
       <div>
-        <form onSubmit={this.post}>
-          <input placeholder="Project Title" name="title" type="text" onChange={this.handleChange} />
-          <input placeholder="Project Description" name="description" type="text" onChange={this.handleChange} />
-        </form>
-      </div>
+        <input ref='task' placeholder="Task" name="task" type="text" />
+        <input ref='taskValue' placeholder="TaskValue" name="taskValue" type="number" />
+        <button onClick={this.postActivity}> Post Task</button>
+     </div>
     )
+  },
+
+  postBoard() {
+    if(this.state.posted === true) {
+      return;
+    }
+
+    return (
+      <div>
+        <input placeholder="Project Title" ref='title' name="title" type="text"  />
+        <input placeholder="Project Description" ref='description' name="description" type="text" />
+        <button onClick={this.post}>Post</button>
+      </div>
+    );
+  },
+
+  render() {
+    console.log(this.props.addProject);
+    return (
+      <div>
+        { this.postBoard() }
+        {this.task()}
+      </div>
+    );
   }
 });
 

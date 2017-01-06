@@ -59,14 +59,14 @@ router.post('/users/board', authorize, (req, res, next) => {
     });
 });
 
-router.post('/users/boarda', authorize, (req, res, next) => {
+router.post('/api/activity', authorize, (req, res, next) => {
 
   // console.log(req);
   // const { projectId } = req.id;
-  const projectId =  2;
-  const taskValue =  4;
-  const task = 'blah'
-  const insertBoardA = { projectId, task, taskValue };
+  const {userId} = req.token;
+  const {projectId, taskValue, task} = req.body;
+
+  const insertBoardA = { projectId, userId, task, taskValue };
 
   knex('project_activity').insert(decamelizeKeys(insertBoardA), '*')
   .then((row) => {
@@ -232,15 +232,13 @@ router.delete('/users', (req, res, next) => {
       next(err);
     });
 });
-//s
-router.get('/api/boards', authorize, (req, res, next) => {
+router.get('/api/activity', authorize, (req, res, next) => {
   const { userId } = req.token;
   console.log(userId);
 
 
-  knex('project_board')
+  knex('project_activity')
     .where('user_id', userId)
-    .first()
     .then((row) => {
       if (!row) {
         return next(boom.create(400, `No user at id ${userId}`));
@@ -251,8 +249,27 @@ router.get('/api/boards', authorize, (req, res, next) => {
       next(err);
     });
 });
+router.get('/api/boards', authorize, (req, res, next) => {
+  const { userId } = req.token;
+  console.log(userId);
 
-router.get('/users/forum', authorize, (req, res, next) => {
+
+  knex('project_board')
+    .where('user_id', userId)
+    .then((row) => {
+      if (!row) {
+        return next(boom.create(400, `No user at id ${userId}`));
+      }
+
+      console.log(row, ' THIS IS ROW');
+      res.send(camelizeKeys(row));
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
+router.get('/api/forum', authorize, (req, res, next) => {
   const { userId } = req.token;
 
   knex('forum')

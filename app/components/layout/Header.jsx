@@ -16,7 +16,9 @@ const Header = React.createClass({
           <a href="#" className="brand-logo">Brand</a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li><a href="sass.html">Profile</a></li>
-            <li><a href="badges.html"></a></li>
+            <li><Link to= '/create-project'>Post New Project</Link></li>
+            <li><Link to= '/projects'>Projects</Link></li>
+
             <li><a href="collapsible.html">Signout</a></li>
           </ul>
         </div>

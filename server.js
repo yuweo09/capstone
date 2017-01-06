@@ -54,29 +54,10 @@ app.use((err, _req, res, _next) => {
   res.sendStatus(500);
 });
 
-// eslint-disable-next-line max-params
-// app.use((err, _req, res, _next) => {
-//   if (err.output && err.output.statusCode) {
-//     return res
-//       .status(err.output.statusCode)
-//       .set('Content-Type', 'text/plain')
-//       .send(err.message);
-//   }
-//
-//   // eslint-disable-next-line no-console
-//   console.error(JSON.stringify(err, null, 2));
-//
-//   if(err.status) {
-//     return res
-//       .status(err.status)
-//       .set('Content-Type', 'text/plain')
-//       .send(err.statusText)
-//   }
-//
-//   // eslint-disable-next-line no-console
-//   console.error(err.stack);
-//   res.sendStatus(500);
-// });
+app.use((_req, res) => {
+ res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 
 const port = process.env.PORT || 8000;
 

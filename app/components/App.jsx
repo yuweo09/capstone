@@ -4,7 +4,6 @@ import Main from './Main';
 import Footer from './layout/Footer';
 import Header from './layout/Header';
 import Intro from './Intro';
-import User from './User';
 import ModalBasicExample from './ModalBasicExample';
 import SignIn from './SignIn';
 import NotFound from './NotFound';
@@ -18,8 +17,20 @@ const App = React.createClass({
     return {
       currentUser: {},
       isLoggedIn: false,
-      forumPost: {}
+      forumPost: {},
+      projects:[],
+      tasks:[]
     }
+  },
+
+  addProject(project) {
+    console.log(project, ' PROJECT');
+    const nextProjects = this.state.projects.concat(project);
+    this.setState({projects:nextProjects})
+  },
+  addTask(task) {
+    const nextTasks = this.state.tasks.concat(task);
+    this.setState({tasks:nextTasks})
   },
   stateMutator() {
     this.setState({ isLoggedIn: true });
@@ -82,7 +93,6 @@ const App = React.createClass({
       });
   },
 
-
   render() {
     return (
 
@@ -100,6 +110,8 @@ const App = React.createClass({
             getCurrentUser={this.getCurrentUser}
             getAllForum={this.getAllForum}
             stateMutator={this.stateMutator}
+            addProject={this.addProject}
+            addTask={this.addTask}
 
           />
 

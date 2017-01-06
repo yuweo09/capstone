@@ -1,21 +1,20 @@
 import React from 'react';
 import axios from 'axios';
-import { Link, Redirect } from 'react-router';
 
-const ProjectBoard = React.createClass({
+const ProjectActivity = React.createClass({
   getInitialState() {
     return {
-      projectBoard: {
-        title:'',
-        description:''
+      projectActivity: {
+        task:'',
+        taskValue:0
       }
     }
   },
 
   componentDidMount() {
-    axios.get('/api/boards')
+    axios.get('/api/activity')
       .then(res => {
-        this.setState({ projectBoard: res.data });
+        this.setState({ projectActivity: res.data });
       })
       .catch(err => {
         console.log('hey');
@@ -32,11 +31,11 @@ const ProjectBoard = React.createClass({
       <div className="col s12 m6">
         <div className="card">
           <div className="card-content black-text">
-            <span className="card-title">Project Title: {this.state.projectBoard.title}</span>
-            <p>{this.state.projectBoard.description}</p>
+            <span className="card-title">Project Task: {this.state.projectActivity.task}</span>
+            <p>Task Value:{this.state.projectActivity.taskValue}</p>
           </div>
           <div className="card-action">
-            <Link to='/projectactivity'>View Task</Link>
+            <a href="#">View Task</a>
             <a href="#">Forum</a>
           </div>
         </div>
@@ -47,4 +46,4 @@ const ProjectBoard = React.createClass({
   }
 });
 
-export default ProjectBoard;
+export default ProjectActivity;

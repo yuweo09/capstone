@@ -1,5 +1,5 @@
 import Intro from './Intro';
-import User from './User';
+import ProjectFeed from './ProjectFeed';
 import ModalBasicExample from './ModalBasicExample';
 import SignIn from './SignIn';
 import NotFound from './NotFound';
@@ -7,6 +7,10 @@ import { Miss, Match, Redirect } from 'react-router';
 import React from 'react';
 import axios from 'axios';
 import ProjectBoard from './ProjectBoard';
+import ProjectActivity from './ProjectActivity';
+import ProjectPost from './ProjectPost';
+
+
 
 
 const Main = React.createClass({
@@ -89,7 +93,7 @@ const Main = React.createClass({
       <main>
         <Match pattern="/" exactly render={ () =>
           this.props.isLoggedIn ? (
-            <Redirect to="/projects" />
+            <Redirect to="/project-feed" />
           ) : (
             <Intro
               signOut={this.signOut}
@@ -99,17 +103,38 @@ const Main = React.createClass({
             />
           )
         } />
-        <Match pattern="/user"  render={ () =>
-          <User />
+        <Match pattern="/project-feed"  render={ () =>
+          <ProjectFeed
+            projects = {this.props.projects}
+            currentUser= {this.props.currentUser}
+            addProject= {this.props.addProject}
+            addTask = {this.props.addTask}
+            tasks = {this.props.tasks}
+          />
         } />
         <Match pattern="/projects" exactly render={ () =>
           <ProjectBoard
-            currentUser= {this.props.currentUser} 
+            currentUser= {this.props.currentUser}
             />
         } />
-        <Match pattern="/projectpost" exactly render={ () =>
+
+        {/* <Match pattern="/projectpost" exactly render={ () =>
           <ProjectPost
             currentUser= {this.props.currentUser}
+            />
+        } /> */}
+        <Match pattern="/projectactivity" exactly render={ () =>
+          <ProjectActivity
+            currentUser= {this.props.currentUser}
+            addProject= {this.props.addProject}
+            />
+        } />
+
+        <Match pattern="/create-project" exactly render={ () =>
+          <ProjectPost
+            currentUser= {this.props.currentUser}
+            addProject= {this.props.addProject}
+            addTask = {this.props.addTask}
             />
         } />
         <Miss component={NotFound} />
