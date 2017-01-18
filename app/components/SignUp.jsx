@@ -77,7 +77,7 @@ const SignUp = React.createClass({
   render() {
     return (
         <div>
-            <button onClick={this.showModal}>SignUp</button>
+            <button className='deep-orange lighten-2 btn' onClick={this.showModal}>SignUp</button>
             <Modal modalStyle={modalStyle} ref="modal2" keyboard={this.callback}>
               <div id="signin-signup">
                 <h3>Sign Up</h3>

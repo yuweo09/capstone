@@ -8,7 +8,11 @@ const ProjectPost = React.createClass({
       projectId:null
     }
   },
-
+componentWillUnmount() {
+  this.props.clearAllProject();
+  this.props.getAllProjects();
+  this.props.getAllTasks();
+},
   post() {
     event.preventDefault();
 

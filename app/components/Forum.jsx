@@ -2,37 +2,46 @@ import React from 'react';
 import ForumThread from './ForumThread';
 
 const Forum = React.createClass({
+  getInitialState() {
+    return {
+      forumText:[]
+    }
+  },
+  postForum() {
+    event.preventDefault();
 
+    let comment = { comment: this.refs.comment.value,
+      taskValue: this.refs.taskValue.value,
+      projectId:this.props.projectId
+    };
 
+    axios.post('/api/activity', task)
+      .then(res => {
+        this.props.addTask(task);
+        this.refs.comment.value = '';
+        this.refs.taskValue.value = '';
+      })
+      .then(() => {
+        notify.show('Task added!!', 'success');
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  },
 
   render() {
-    let sortedUsers = this.props.users;
-    sortedUsers.sort(function(a, b) {
-      if (a.highScore > b.highScore) {
-        return -1;
-      }
-      if (a.highScore < b.highScore) {
-        return 1;
-      }
-      return 0;
-    });
-    return (
-      <table className="clearfix" id="leaderboard-table">
-        <thead>
-          <tr>
-            <th>RANK</th>
-            <th>USER</th>
-            <th>HIGH SCORE</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedUsers.map((user,index) => {
-            return<ForumThread key={index} rank={index + 1} user={user}/>;
-          })}
-        </tbody>
-      </table>
-    )
+    <div class="forum-container">
+      <div class="comment">
+      <p>Hey this is a nice project.</p>
+      </div>
+      <div class="post-comment">
+          <input ref='task' placeholder="Task" name="task" type="text" />
+       <textarea ref='comment' placeholder='Content'></textarea>
+       <button>post </button>
+      </div>
+      </div>
   }
+
 });
 
 export default Forum;

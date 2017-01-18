@@ -3,10 +3,10 @@
 exports.up = function(knex) {
   return knex.schema.createTable('forum_thread', (table) => {
     table.increments();
-    table.integer('forum_id')
+    table.integer('project_id')
         .notNullable()
         .references('id')
-        .inTable('forum')
+        .inTable('pro')
         .onDelete('CASCADE')
         .index();
     table.integer('user_id')

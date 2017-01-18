@@ -22,7 +22,7 @@ const Intro = React.createClass({
 componentDidMount(){
   // document.body.style.backgroundColor = "red";
   // document.body.style.backgroundImage =   "url('')";
-
+  // this.props.signOut();
 
 
 },
@@ -39,32 +39,19 @@ componentDidMount(){
   render() {
     return (
       <main>
-        {/* <Grid.Row columns={2}>
-   <Grid.Column> */}
-     <SignUp handleSignUpSubmit={this.handleSignUpSubmit}
-            isLoggedIn={this.props.isLoggedIn}
-            signIn={this.props.signIn}
-            stateMutator={this.props.stateMutator}
-     />
-   {/* </Grid.Column>
-   <Grid.Column> */}
-     <SignIn
-       isLoggedIn={this.props.isLoggedIn}
-       signIn={this.props.signIn}
-         stateMutator={this.props.stateMutator}
-     />
-   {/* </Grid.Column> */}
- {/* </Grid.Row> */}
-        <ul id="link-options">
-          {/* <Link to='/play'><li>PLAY ON KEYBOARD</li></Link>
-          <Link to='/airconsole'><li>PLAY ON AIR CONSOLE</li></Link> */}
-          {/* <this.IsLoggedIn />
-          <this.SignOut /> */}
-          {/* <img src="https://lh3.googleusercontent.com/-cvPfLNJ4JU8/Va561MYkJsI/AAAAAAAC3zc/P0wbdKxr7gg/w781-h1170/Light%2BFeast%2B-%2BTyristrand%252C%2BNorway%2Bby%2BOle%2BHenrik%2BSkjelstad.jpg"/> */}
-
-        </ul>
-
-
+        <div className="intro deep-orange lighten-2">
+            <h1 className="grey-text text-lighten-5">Brand Yourself</h1>
+            <h5 className='deep-orange lighten-2'><SignUp handleSignUpSubmit={this.handleSignUpSubmit}
+                   isLoggedIn={this.props.isLoggedIn}
+                   signIn={this.props.signIn}
+                   stateMutator={this.props.stateMutator}
+            /></h5>
+            <h5 className='deep-orange lighten-2'><SignIn
+                 isLoggedIn={this.props.isLoggedIn}
+                 signIn={this.props.signIn}
+                   stateMutator={this.props.stateMutator}
+               /></h5>
+      </div>
       </main>
     )
   }

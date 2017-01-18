@@ -11,6 +11,7 @@ import { Miss, Match } from 'react-router';
 import axios from 'axios';
 import ProjectBoard from './ProjectBoard';
 import { Link, Redirect } from 'react-router';
+import Notifications, {notify} from 'react-notify-toast';
 
 const App = React.createClass({
   getInitialState() {
@@ -19,8 +20,19 @@ const App = React.createClass({
       isLoggedIn: false,
       forumPost: {},
       projects:[],
-      tasks:[]
+      tasks:[],
+      allProjects:[],
+      allTasks:[]
     }
+  },
+
+  clearProject() {
+      const empty = [];
+      this.setState({projects:empty, tasks: empty})
+  },
+  clearAllProject() {
+      const empty = [];
+      this.setState({allProjects:empty, allTasks: empty})
   },
 
   addProject(project) {
@@ -53,6 +65,24 @@ const App = React.createClass({
         this.setState({ loadErr: err });
       });
   },
+  getAllProjects() {
+    axios.get('/api/allprojects')
+      .then(res => {
+        this.setState({ allProjects: res.data });
+      })
+      .catch(err => {
+        this.setState({ loadErr: err });
+      });
+  },
+  getAllTasks() {
+    axios.get('/api/alltasks')
+      .then(res => {
+        this.setState({ allTasks: res.data });
+      })
+      .catch(err => {
+        this.setState({ loadErr: err });
+      });
+  },
   componentDidMount() {
     axios.get('/token')
       .then(res => {
@@ -60,8 +90,8 @@ const App = React.createClass({
         if (isLoggedIn) {
           this.setState({ isLoggedIn: true });
           this.getCurrentUser();
-          // this.getAllForum();
-          // this.getUserScores();
+          this.getAllProjects();
+          this.getAllTask();
           // this.getUserFriends();
         } else {
           this.setState({ isLoggedIn: false });
@@ -72,7 +102,10 @@ const App = React.createClass({
       });
   },
 
-
+componentWillMount(){
+  this.getAllProjects();
+  this.getAllTasks();
+},
   signIn() {
     this.setState({ isLoggedIn: true });
 
@@ -98,6 +131,7 @@ const App = React.createClass({
 
       <BrowserRouter>
         <div>
+          <Notifications/>
           <Header
             { ...this.state }
             signOut={this.signOut}
@@ -112,6 +146,10 @@ const App = React.createClass({
             stateMutator={this.stateMutator}
             addProject={this.addProject}
             addTask={this.addTask}
+            getAllProjects={this.getAllProjects}
+            getAllTask = {this.getAllTask}
+            clearProject = {this.clearProject}
+            clearAllProject = {this.clearAllProject}
 
           />
 

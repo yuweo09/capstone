@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import ViewTask from './ViewTask';
+import AddTasks from './AddTasks';
+import ForumThread from './ForumThread';
 
 
 const ProjectCard= React.createClass({
@@ -15,11 +17,23 @@ const ProjectCard= React.createClass({
             <p>Description:{this.props.description}</p>
           </div>
           <div className="card-action">
-            <ViewTask
-              projectId={this.props.projectId}
-              tasks = {this.props.tasks}
-            />
-            <a href="#">Forum</a>
+            <div className='cardSum'>
+              <ViewTask
+                projectId={this.props.projectId}
+                tasks = {this.props.tasks}
+              />
+          </div>
+          <div className='cardSum'>
+              <ForumThread
+                projectId={this.props.projectId}
+              />
+            </div>
+            <div className='cardSum'>
+              <AddTasks
+                projectId={this.props.projectId}
+                addTask = {this.props.addTask}
+              />
+            </div>
           </div>
         </div>
     </div>

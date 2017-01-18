@@ -8,23 +8,20 @@ import Header from './layout/Header';
 import { Match } from 'react-router';
 import { Link, Redirect } from 'react-router';
 import axios from 'axios';
-import ProjectTask from './ProjectTask';
+import ProjectTaskAll from './ProjectTaskAll';
 
 
-const ProjectTasks = React.createClass({
+const ProjectTasksAll = React.createClass({
 
 
   projectTasks() {
     const projectTasks = [];
     for(let i = 0; i < this.props.tasks.length; i++) {
-      console.log(this.props.tasks[i]+ 'IDDDDDDDD');
       projectTasks.push(
-        <ProjectTask
+        <ProjectTaskAll
           key={i}
           task = {this.props.tasks[i].task}
           taskValue = {this.props.tasks[i].taskValue}
-          projectId = {this.props.projectId}
-          taskId = {this.props.tasks[i].id}
 
         />
 
@@ -44,4 +41,4 @@ const ProjectTasks = React.createClass({
   }
 });
 
-export default ProjectTasks;
+export default ProjectTasksAll;

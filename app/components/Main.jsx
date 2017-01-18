@@ -7,8 +7,9 @@ import { Miss, Match, Redirect } from 'react-router';
 import React from 'react';
 import axios from 'axios';
 import ProjectBoard from './ProjectBoard';
-import ProjectActivity from './ProjectActivity';
+import AllProjects from './AllProjects';
 import ProjectPost from './ProjectPost';
+import AddTasks from './AddTasks';
 
 
 
@@ -110,6 +111,9 @@ const Main = React.createClass({
             addProject= {this.props.addProject}
             addTask = {this.props.addTask}
             tasks = {this.props.tasks}
+            allProjects= {this.props.allProjects}
+            allTasks= {this.props.allTasks}
+            clearProject = {this.props.clearProject}
           />
         } />
         <Match pattern="/projects" exactly render={ () =>
@@ -118,15 +122,11 @@ const Main = React.createClass({
             />
         } />
 
-        {/* <Match pattern="/projectpost" exactly render={ () =>
-          <ProjectPost
-            currentUser= {this.props.currentUser}
-            />
-        } /> */}
-        <Match pattern="/projectactivity" exactly render={ () =>
-          <ProjectActivity
-            currentUser= {this.props.currentUser}
-            addProject= {this.props.addProject}
+        <Match pattern="/allprojects" exactly render={ () =>
+          <AllProjects
+            allProjects= {this.props.allProjects}
+            allTasks= {this.props.allTasks}
+            clearProject = {this.props.clearProject}
             />
         } />
 
@@ -135,9 +135,17 @@ const Main = React.createClass({
             currentUser= {this.props.currentUser}
             addProject= {this.props.addProject}
             addTask = {this.props.addTask}
+            clearProject = {this.props.clearProject}
+            getAllProjects={this.props.getAllProjects}
+            getAllTask = {this.props.getAllTask}
+            clearAllProject = {this.props.clearAllProject}
+
             />
         } />
         <Miss component={NotFound} />
+        {/* <AddTasks
+          addTask = {this.props.addTask}
+        /> */}
       </main>
     )
   }

@@ -3,10 +3,10 @@ import React from 'react';
 const Footer = React.createClass({
   render() {
     return (
-      <footer className="blue darken-3 page-footer">
+      <footer className="deep-orange lighten-2">
   <div className="footer-copyright">
     <div className="container">
-      © 2016 KWH
+      {/* © 2016 KWH */}
     </div>
   </div>
 </footer>

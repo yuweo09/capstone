@@ -9,6 +9,18 @@ const modalStyle = {
       width: '500px'
 
 };
+// var modalStyle = {
+//     transform: 'rotate(45deg) translateX(-50%)',
+// };
+
+var backdropStyle = {
+    backgroundColor: 'red'
+};
+
+var contentStyle = {
+    backgroundColor: 'white',
+    height: '100%'
+};
 const SignIn = React.createClass({
   handleSubmit(event) {
     event.preventDefault();
@@ -39,13 +51,13 @@ const SignIn = React.createClass({
 
     render: function() {
         return (
-            <div>
-                <button onClick={this.showModal}>Login</button>
-                <Modal modalStyle={modalStyle} ref="modal" keyboard={this.callback}>
-                  <div id="signin-signup">
+            <div id='on'>
+                <button className='deep-orange lighten-2 btn' onClick={this.showModal}>Login</button>
+                <Modal modalStyle={modalStyle} ref="modal" keyboard={this.callback} contentStyle={contentStyle}>
+                  <div id="one">
                     <p>Sign in if you already have an account</p>
                     <form onSubmit={this.handleSubmit}>
-                      <input ref='email' placeholder="Email" name="email" type="email" onChange={this.handleChange} />
+                      <input className='two' ref='email' placeholder="Email" name="email" type="email" onChange={this.handleChange} />
                       <input ref='password' placeholder="Password" name="password" type="password" onChange={this.handleChange} />
                       <button type="submit">Login</button>
                     </form>

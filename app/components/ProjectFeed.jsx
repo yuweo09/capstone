@@ -17,7 +17,12 @@ const ProjectFeed = React.createClass({
       ftext: ''
     }
   },
+componentWillUnmount() {
+  this.props.clearProject();
+  // this.props.getAllProjects();
+  // this.props.getAllTasks();
 
+},
   componentDidMount(){
     axios.get('/api/boards')
       .then(res => {
@@ -48,6 +53,7 @@ const ProjectFeed = React.createClass({
           description = {this.props.projects[i].description}
           projectId= {this.props.projects[i].id}
           tasks = {this.props.tasks}
+          addTask = {this.props.addTask}
         />
 
       );

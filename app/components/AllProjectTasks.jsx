@@ -1,15 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-import ProjectTasks from './ProjectTasks';
-import Notifications, {notify} from 'react-notify-toast';
+import ProjectTasksAll from './ProjectTasksAll';
 
-const ViewTask = React.createClass({
+const AllProjectTasks = React.createClass({
   getInitialState() {
     return {clicked: false}
 
   },
 changestate() {
-this.setState({ clicked: !this.state.clicked });
+  this.setState({ clicked: true });
 
 },
 
@@ -18,16 +17,11 @@ tasks(projectSpecificTasks) {
     return;
   }
 
-  console.log(projectSpecificTasks, ' PROJECT SPECIFIC TASKS');
-  if(projectSpecificTasks.length === 0) {
-    return notify.show('No tasks', 'error');
-  }
-console.log('Why did i get here');
+  console.log(projectSpecificTasks, 'All PROJECT SPECIFIC TASKS');
 
   return (
-    <ProjectTasks
+    <ProjectTasksAll
       tasks = {projectSpecificTasks}
-      projectId = {this.props.projectId}
     />
   );
   },
@@ -51,4 +45,4 @@ console.log('Why did i get here');
   }
 });
 
-export default ViewTask;
+export default AllProjectTasks;
