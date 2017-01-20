@@ -1675,7 +1675,7 @@ var ProjectPost = _react2.default.createClass({
 
     return _react2.default.createElement(
       'div',
-      null,
+      { id: 'post' },
       _react2.default.createElement('input', { placeholder: 'Project Title', ref: 'title', name: 'title', type: 'text' }),
       _react2.default.createElement('input', { placeholder: 'Project Description', ref: 'description', name: 'description', type: 'text' }),
       _react2.default.createElement(
@@ -1689,7 +1689,7 @@ var ProjectPost = _react2.default.createClass({
     console.log(this.props.addProject);
     return _react2.default.createElement(
       'div',
-      null,
+      { id: 'blah' },
       this.postBoard(),
       this.task()
     );

@@ -28,8 +28,9 @@ app.use(users);
 app.use(boards);
 
 app.use((_req, res) => {
-  res.sendStatus(404);
+ res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
 
 app.use((err, _req, res, _next) => {
   if (err.output && err.output.statusCode) {
@@ -54,9 +55,6 @@ app.use((err, _req, res, _next) => {
   res.sendStatus(500);
 });
 
-app.use((_req, res) => {
- res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
 
 
 const port = process.env.PORT || 8000;

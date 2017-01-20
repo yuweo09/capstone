@@ -75,7 +75,7 @@ componentWillUnmount() {
     }
 
     return (
-      <div>
+      <div id='post'>
         <input placeholder="Project Title" ref='title' name="title" type="text"  />
         <input placeholder="Project Description" ref='description' name="description" type="text" />
         <button onClick={this.post}>Post</button>
@@ -86,7 +86,7 @@ componentWillUnmount() {
   render() {
     console.log(this.props.addProject);
     return (
-      <div>
+      <div id='blah'>
         { this.postBoard() }
         {this.task()}
       </div>
